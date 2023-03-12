@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+@use "react-widgets/styles.scss" with (
+  $components: (
+    "DropdownList",
+    "Combobox",
+  )
+);
+
+@use "react-widgets/scss/react-widgets" with (
+  $widget-font-size: 16px,
+  $input-height: 2.5em
+);

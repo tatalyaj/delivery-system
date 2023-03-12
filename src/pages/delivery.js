@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./delivery.css";
+import "../styles/delivery.css";
 
 const addressesCheckList = [
   "Haifa",
