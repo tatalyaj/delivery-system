@@ -1,12 +1,13 @@
 //import { DropDownList } from "@progress/kendo-react-dropdowns";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { ComboBox } from "@progress/kendo-react-dropdowns";
 //import { ComboBoxComponent } from "@syncfusion/ej2-react-dropdowns";
 //import Combobox from "react-widgets/Combobox";
 //import { DropDownList } from "@progress/kendo-react-dropdowns";
 import DropdownList from "react-widgets/DropdownList";
 
 // CoboBox addresses
-let addresses = [
+let addrItems = [
   { id: 0, name: "Jerusalem" },
   { id: 1, name: "Haifa" },
   { id: 2, name: "Tel-Aviv" },
@@ -17,7 +18,7 @@ let addresses = [
 ];
 
 // CoboBox drivers
-let drivers = [
+let driversItems = [
   { id: 0, name: "Jason" },
   { id: 1, name: "Johanna" },
   { id: 2, name: "Ray" },
@@ -27,44 +28,52 @@ let drivers = [
   { id: 6, name: "Harry" },
 ];
 
-// Events
-//let alertWhenSelected = () => alert("selected");
-//let alertWhenChanged = () => alert("changed");
-
 const Manager = () => {
-  const [value, setValue] = useState(addresses[0].name);
-  const [person, setPerson] = useState(drivers[0].name);
+  //const [value, setValue] = useState(addrItems[0].name);
+  //const [person, setPerson] = useState(driversItems[0].name);
+
+  const [selectedAddr, setSelectedAddr] = useState(addrItems.name);
+  const [selectedAssignee, setSelectedAssignee] = useState(driversItems.name);
+
+  const onChange = () => {
+    if (this.div === "admin-combox") setSelectedAddr(this.event.value);
+    else if (this.div === "driver-combox")
+      setSelectedAssignee(this.event.value);
+  };
 
   return (
-    <section className="admin">
-      <form className="addressesList">
-        <p>
+    <div className="comboxes">
+      <div className="admin-combox">
+        {/* <p>
           Current Value: <strong>{value}</strong>
-        </p>
-        <DropdownList
-          value={value}
-          data={addresses}
-          dataKey="id"
+        </p> */}
+        <ComboBox
+          //defaultValue={addrItems[0].name}
+          data={addrItems}
+          value={selectedAddr}
+          //dataKey="id"
           textField="name"
-          //defaultValue={0}
-          onChange={(e) => setValue(e.value)}
-          //placeholder="Select an address"
+          onChange={onChange}
+          //onSelect={onSelect}
+          placeholder="Select an address"
         />
-      </form>
-      <form className="driversList">
-        <p>
+      </div>
+      <div className="driver-combox">
+        {/* <p>
           Current Value: <strong>{person}</strong>
-        </p>
-        <DropdownList
-          value={person}
-          data={drivers}
-          dataKey="id"
+        </p> */}
+        <ComboBox
+          data={driversItems}
+          value={selectedAssignee}
+          //dataKey="name"
           textField="name"
-          onChange={(e) => setPerson(e.value)}
-          //placeholder="Select a driver"
+          onChange={onChange}
+          //onSelect={selectedAssignee}
+          //onSelect={onSelect}
+          placeholder="Select a driver"
         />
-      </form>
-    </section>
+      </div>
+    </div>
   );
 };
 

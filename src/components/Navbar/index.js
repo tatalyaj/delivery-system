@@ -1,24 +1,36 @@
 import React from "react";
-import { Nav, NavLink, NavMenu } from "./NavbarElements";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
 
-const Navbar = () => {
+function NavbarItem(props) {
+  return <Nav.Link href={props.link}>{props.text}</Nav.Link>;
+}
+
+const MyNavbar = (props) => {
   return (
-    <>
-      <Nav>
-        <NavMenu>
-          <NavLink to="/admin" activeStyle>
-            Manager
-          </NavLink>
-          <NavLink to="/delivery" activeStyle>
-            Driver
-          </NavLink>
-          <NavLink to="/" activeStyle>
-            Home
-          </NavLink>
-        </NavMenu>
-      </Nav>
-    </>
+    <Navbar bg="light" expand="lg">
+      <Container fluid>
+        <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="me-auto">
+            {props.items.map((i) => (
+              <NavbarItem link={i.link} text={i.text} />
+            ))}
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+
+    // <Nav>
+    //   <NavMenu>
+    //     {props.items.map((i) => (
+    //       <NavbarItem link={i.link} text={i.text} />
+    //     ))}
+    //   </NavMenu>
+    // </Nav>
   );
 };
 
-export default Navbar;
+export default MyNavbar;
