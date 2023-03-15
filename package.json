@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/material": "^5.11.13",
     "@progress/kendo-react-dropdowns": "^5.11.0",
     "@syncfusion/ej2-react-dropdowns": "^20.4.53",
     "@testing-library/jest-dom": "^5.16.5",
@@ -15,6 +18,7 @@
     "react-icons": "^4.8.0",
     "react-router-dom": "^6.8.2",
     "react-scripts": "5.0.1",
+    "react-select": "^5.7.0",
     "react-widgets": "^5.8.4",
     "styled-components": "^5.3.8",
     "web-vitals": "^2.1.4"
