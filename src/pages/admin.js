@@ -28,7 +28,12 @@ const Manager = () => {
   ]);
   const [driversOptions, setDriversOptions] = useState([]);
   const [driverName, setDriverName] = useState("");
-
+  //  TYPE OF DELIVERY
+  const [types, setTypes] = useState([
+    { id: 0, name: "food" },
+    { id: 1, name: "medicine" },
+  ]);
+  const [typesOptions, setTypesOptions] = useState([]);
   // ******************CONSTANTS******************
   // ADDRESSSES
   let nextAddrId = addresses[addresses.length - 1].id;
@@ -79,6 +84,9 @@ const Manager = () => {
     setDrivers(drivers.filter((single) => single.id !== getID));
     setDriversOptions(driversOptions.filter((single) => single.id !== getID));
   };
+  //  TYPE OF DELIVERY
+  // THE "GET" SCENARIO
+  const handleTypesOptions = (typesOptions) => setTypesOptions(typesOptions);
   return (
     <div className="admin">
       <div className="addresses">
@@ -87,6 +95,7 @@ const Manager = () => {
           isSearchable
           maxMenuHeight={200}
           isClearable={false}
+          placeholder="Select an address..."
           options={addresses}
           getOptionLabel={(option) => option.name}
           getOptionValue={(option) => option.name}
@@ -121,6 +130,7 @@ const Manager = () => {
           isSearchable
           maxMenuHeight={200}
           isClearable={false}
+          placeholder="Select a driver..."
           options={drivers}
           getOptionLabel={(option) => option.name}
           getOptionValue={(option) => option.name}
@@ -148,6 +158,20 @@ const Manager = () => {
             </Button>
           </div>
         </div>
+      </div>
+      <div className="types-of-delivery">
+        <Select
+          isMulti
+          isSearchable
+          maxMenuHeight={200}
+          isClearable={false}
+          placeholder="Select a delivery type..."
+          options={types}
+          getOptionLabel={(option) => option.name}
+          getOptionValue={(option) => option.name}
+          value={typesOptions}
+          onChange={handleTypesOptions}
+        />
       </div>
     </div>
   );
