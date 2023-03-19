@@ -1,21 +1,23 @@
 import { useState } from "react";
 import Select from "react-select";
 import Button from "@mui/material/Button";
+//import { c } from "tar";
 
 const Manager = () => {
   //******************USE-STATES******************
   // ADDRESSSES
   const [addresses, setAddresses] = useState([
-    { id: 0, name: "Jerusalem" },
-    { id: 1, name: "Haifa" },
-    { id: 2, name: "Tel-Aviv" },
-    { id: 3, name: "Eilat" },
-    { id: 4, name: "Ra'anana" },
-    { id: 5, name: "Zichron" },
-    { id: 6, name: "Tiberia" },
+    { id: 0, name: "Jerusalem", frequency: 0 },
+    { id: 1, name: "Haifa", frequency: 0 },
+    { id: 2, name: "Tel-Aviv", frequency: 0 },
+    { id: 3, name: "Eilat", frequency: 0 },
+    { id: 4, name: "Ra'anana", frequency: 0 },
+    { id: 5, name: "Zichron", frequency: 0 },
+    { id: 6, name: "Tiberia", frequency: 0 },
   ]);
   const [addressesOptions, setAddressesOptions] = useState([]);
   const [addrName, setAddrName] = useState("");
+  const [addrUpdatedName, setUpdatedAddrName] = useState("");
   // DRIVERS
   const [drivers, setDrivers] = useState([
     { id: 0, name: "Jason" },
@@ -28,6 +30,7 @@ const Manager = () => {
   ]);
   const [driversOptions, setDriversOptions] = useState([]);
   const [driverName, setDriverName] = useState("");
+  const [driverUpdatedName, setUpdatedDriverName] = useState("");
   //  TYPE OF DELIVERY
   const [types, setTypes] = useState([
     { id: 0, name: "food" },
@@ -37,32 +40,71 @@ const Manager = () => {
   // ******************CONSTANTS******************
   // ADDRESSSES
   let nextAddrId = addresses[addresses.length - 1].id;
+
   // DRIVERS
   let nextDriverId = drivers[drivers.length - 1].id;
   // ******************HANDLE FUNCTIONS******************
   // ADDRESSSES
   // THE "GET" SCENARIO
-  const handleAddressesOptions = (addressesOptions) =>
+  const handleAddressesOptions = (addressesOptions) => {
     setAddressesOptions(addressesOptions);
+    //console.log(addressesOptions.length);
+    // In each Select the FREQUENCY goes up by one
+    for (let i = 0; i <= addressesOptions.length - 1; i++) {
+      addressesOptions[i].frequency++;
+      //console.log(addressesOptions[i]);
+    }
+  };
+
   // THE "ADD" SCENARIO
   // The input value name
   const handleSetAddrName = (e) => setAddrName(e.target.value);
-  console.log(addrName);
+  //console.log(addrName);
   // The value added by the push on the "ADD BUTTON"
   const handleAddAddresses = () => {
     setAddrName("");
     var updatedAddrList = [...addresses];
-    updatedAddrList = [...addresses, { id: nextAddrId++, name: addrName }];
+    updatedAddrList = [
+      ...addresses,
+      { id: nextAddrId++, name: addrName, frequency: 0 },
+    ];
     setAddresses(updatedAddrList);
-    console.log(updatedAddrList);
+    //console.log(updatedAddrList);
   };
   // THE "DELETE" SCENARIO
-  const handleDeleteAddresses = (getID) => {
-    setAddresses(addresses.filter((single) => single.id !== getID));
-    setAddressesOptions(
-      addressesOptions.filter((single) => single.id !== getID)
-    );
+  const handleDeleteAddresses = (addressesChosen) => {
+    for (let i = 0; i <= addressesChosen.length - 1; i++)
+      addresses.splice(addressesChosen[i].id, 1);
+    //console.log(addresses);
+
+    // var chosenIDList = [];
+    // var chosenAddr = [];
+    // // addressesChosen - Its a list of the addresses The user chose
+    // for (let i = 0; i <= addressesChosen.length - 1; i++) {
+    //   chosenIDList[i] = addressesChosen[i].id;
+    // }
+    // // console.log(chosenIDList);
+    // for (let i = 0; i <= chosenIDList.length - 1; i++) {
+    //   chosenAddr[i] = addresses.filter((single) => {
+    //     return single.id === chosenIDList[i]
+    //       ? addresses.splice(single.id, 1)
+    //       : addresses;
+    //   });
+    // }
   };
+  // THE "UPDATE" SCENARIO
+  const handleUpdatedAddrName = (e) => {
+    setUpdatedAddrName(e.target.value);
+  };
+  // The value updated by the click on the "UPDATE BUTTON"
+  const handleUpdateAddresses = (addressesChosen) => {
+    setUpdatedAddrName("");
+    for (let i = 0; i <= addressesChosen.length - 1; i++) {
+      addressesChosen[i].name = addrUpdatedName;
+      //console.log(addressesChosen);
+    }
+  };
+
   // DRIVERS
   // THE "GET" SCENARIO
   const handleDriversOptions = (driversOptions) =>
@@ -70,19 +112,48 @@ const Manager = () => {
   // THE "ADD" SCENARIO
   // The input value name
   const handleSetDriversName = (e) => setDriverName(e.target.value);
-  console.log(driverName);
-  // The value added by the push on the "ADD BUTTON"
+  //console.log(driverName);
+  // The value added by the click on the "ADD BUTTON"
   const handleAddDrivers = () => {
     setDriverName("");
     var updatedDriversList = [...drivers];
     updatedDriversList = [...drivers, { id: nextDriverId++, name: driverName }];
     setDrivers(updatedDriversList);
-    console.log(updatedDriversList);
+    //console.log(updatedDriversList);
   };
   // THE "DELETE" SCENARIO
-  const handleDeleteDrivers = (getID) => {
-    setDrivers(drivers.filter((single) => single.id !== getID));
-    setDriversOptions(driversOptions.filter((single) => single.id !== getID));
+  const handleDeleteDrivers = (driversChosen) => {
+    for (let i = 0; i <= driversChosen.length - 1; i++)
+      drivers.splice(driversChosen[i].id, 1);
+    //console.log(drivers);
+
+    // var chosenIDList = [];
+    // var chosenDriver = [];
+    // // driversChosen - Its a list of the drivers The user chose
+    // for (let i = 0; i <= driversChosen.length - 1; i++) {
+    //   chosenIDList[i] = driversChosen[i].id;
+    // }
+    // // console.log(chosenIDList);
+    // for (let i = 0; i <= chosenIDList.length - 1; i++) {
+    //   chosenDriver[i] = drivers.filter((single) => {
+    //     return single.id === chosenIDList[i]
+    //       ? drivers.splice(single.id, 1)
+    //       : drivers;
+    //   });
+    // }
+  };
+  // THE "UPDATE" SCENARIO
+  const handleUpdatedDriverName = (e) => {
+    setUpdatedDriverName(e.target.value);
+    //console.log(e.target.value);
+  };
+  // The value updated by the click on the "UPDATE BUTTON"
+  const handleUpdateDriver = (driversChosen) => {
+    setUpdatedDriverName("");
+    for (let i = 0; i <= driversChosen.length - 1; i++) {
+      driversChosen[i].name = driverUpdatedName;
+      //console.log(driversChosen);
+    }
   };
   //  TYPE OF DELIVERY
   // THE "GET" SCENARIO
@@ -102,24 +173,45 @@ const Manager = () => {
           value={addressesOptions}
           onChange={handleAddressesOptions}
         />
-        <div className="address-Buttons">
+        <div className="address-buttons">
           <div
-            className="address-Add-Button"
+            className="address-add-button"
             style={{ marginTop: 40, marginBottom: 40 }}
           >
             <input value={addrName} onChange={handleSetAddrName} />
-            <button onClick={handleAddAddresses}>Add Address</button>
+            <Button
+              onClick={handleAddAddresses}
+              color="primary"
+              style={{ marginLeft: 20 }}
+            >
+              Add Address
+            </Button>
           </div>
           <div
-            className="address-Delete-Button"
+            className="address-delete-button"
             style={{ marginTop: 40, marginBottom: 40 }}
           >
             <Button
-              onClick={() => handleDeleteAddresses(addressesOptions.id)}
+              onClick={() => handleDeleteAddresses(addressesOptions)}
+              //onClick={handleDeleteAddresses()}
               color="primary"
               style={{ marginLeft: 20 }}
             >
               Delete Address
+            </Button>
+          </div>
+          <div
+            className="address-update-button"
+            style={{ marginTop: 40, marginBottom: 40 }}
+          >
+            <input value={addrUpdatedName} onChange={handleUpdatedAddrName} />
+            <Button
+              onClick={() => handleUpdateAddresses(addressesOptions)}
+              //onClick={handleDeleteAddresses()}
+              color="primary"
+              style={{ marginLeft: 20 }}
+            >
+              Update Address
             </Button>
           </div>
         </div>
@@ -137,24 +229,46 @@ const Manager = () => {
           value={driversOptions}
           onChange={handleDriversOptions}
         />
-        <div className="drivers-Buttons">
+        <div className="drivers-buttons">
           <div
-            className="drivers-Add-Button"
+            className="drivers-add-button"
             style={{ marginTop: 40, marginBottom: 40 }}
           >
             <input value={driverName} onChange={handleSetDriversName} />
-            <button onClick={handleAddDrivers}>Add Driver</button>
+            <Button
+              onClick={handleAddDrivers}
+              color="primary"
+              style={{ marginLeft: 20 }}
+            >
+              Add Driver
+            </Button>
           </div>
           <div
-            className="drivers-Delete-Button"
+            className="drivers-delete-button"
             style={{ marginTop: 40, marginBottom: 40 }}
           >
             <Button
-              onClick={() => handleDeleteDrivers(driversOptions.id)}
+              onClick={() => handleDeleteDrivers(driversOptions)}
               color="primary"
               style={{ marginLeft: 20 }}
             >
               Delete Driver
+            </Button>
+          </div>
+          <div
+            className="drivers-update-button"
+            style={{ marginTop: 40, marginBottom: 40 }}
+          >
+            <input
+              value={driverUpdatedName}
+              onChange={handleUpdatedDriverName}
+            />
+            <Button
+              onClick={() => handleUpdateDriver(driversOptions)}
+              color="primary"
+              style={{ marginLeft: 20 }}
+            >
+              Update Driver
             </Button>
           </div>
         </div>
