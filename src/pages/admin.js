@@ -1,8 +1,9 @@
 import { useState } from "react";
 import Select from "react-select";
 import Button from "@mui/material/Button";
-//import { c } from "tar";
+import Admin from "./classes/admin";
 
+const adminService = new Admin();
 const Manager = () => {
   //******************USE-STATES******************
   // ADDRESSSES
@@ -39,7 +40,7 @@ const Manager = () => {
   const [typesOptions, setTypesOptions] = useState([]);
   // ******************CONSTANTS******************
   // ADDRESSSES
-  let nextAddrId = addresses[addresses.length - 1].id;
+  //let nextAddrId = addresses[addresses.length - 1].id;
 
   // DRIVERS
   let nextDriverId = drivers[drivers.length - 1].id;
@@ -58,18 +59,24 @@ const Manager = () => {
 
   // THE "ADD" SCENARIO
   // The input value name
+
   const handleSetAddrName = (e) => setAddrName(e.target.value);
+
   //console.log(addrName);
   // The value added by the push on the "ADD BUTTON"
+  // const handleAddAddresses = () => {
+  //   setAddrName("");
+  //   var updatedAddrList = [...addresses];
+  //   updatedAddrList = [
+  //     ...addresses,
+  //     { id: nextAddrId++, name: addrName, frequency: 0 },
+  //   ];
+  //   setAddresses(updatedAddrList);
+  //   //console.log(updatedAddrList);
+  // };
   const handleAddAddresses = () => {
     setAddrName("");
-    var updatedAddrList = [...addresses];
-    updatedAddrList = [
-      ...addresses,
-      { id: nextAddrId++, name: addrName, frequency: 0 },
-    ];
-    setAddresses(updatedAddrList);
-    //console.log(updatedAddrList);
+    adminService.addAddress(addrName, 0);
   };
   // THE "DELETE" SCENARIO
   const handleDeleteAddresses = (addressesChosen) => {
