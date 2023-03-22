@@ -9,124 +9,47 @@ export default class AdminPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      // ADDRESSES
       addresses: adminService.getAddresses(),
       addressForEdit: null,
       showDialog: false,
-      updatedCity: null,
-      updatedAddress: null,
-      updatedDeliveryType: null,
-      updatedFrequency: null,
-      updatedRecipientName: null,
-      updatedRecipientPhone: null,
-      newCity: null,
-      newAddress: null,
-      newDeliveryType: null,
-      newFrequency: null,
-      newRecipientName: null,
-      newRecipientPhone: null,
+      showDriverDialog: false,
+      city: null,
+      address: null,
+      deliveryType: null,
+      frequency: null,
+      recipientName: null,
+      recipientPhone: null,
+      // DRIVERS
+      drivers: adminService.getDrivers(),
+      driverForEdit: null,
+      firstName: null,
+      lastName: null,
+      phone: null,
+      distributionArea: null,
     };
-
     // this.getAddresses();
   }
-  // ADDRESSES
+
+  //**********BOTH ADDRESSES AND DRIVERS**********
+  handleChange = (e) => {
+    const { name, value } = e.target;
+    console.log(name, value);
+    // this.setState({ ...this.state, [e.target?.name]: value });
+    this.setState({ [name]: value });
+  };
+
+  //**********ADDRESSES**********
   // For the "GET" scenario
   getAddresses() {
     this.setState({
       addresses: adminService.getAddresses(),
     });
   }
-  // For the "DELETE" scenario
-  handleDelete(id, event) {
-    adminService.deleteAddress(id);
-    this.getAddresses();
-  }
-  handleClose() {
-    this.setState({
-      showDialog: false,
-      addressForEdit: null,
-      updatedCity: null,
-      updatedAddress: null,
-      updatedDeliveryType: null,
-      updatedFrequency: null,
-      updatedRecipientName: null,
-      updatedRecipientPhone: null,
-      newCity: null,
-      newAddress: null,
-      newDeliveryType: null,
-      newFrequency: null,
-      newRecipientName: null,
-      newRecipientPhone: null,
-    });
-  }
 
-  // For the "UPDATE" scenario
-  handleChange = (e) => {
-    // const value = e.target.value;
-    //if(e.className == "edit.button")
-    const { name, value } = e.target;
-    console.log(name, value);
-    //console.log([name]);
-    // this.setState({ ...this.state, [e.target?.name]: value });
-    this.setState({ [name]: value });
-    //console.log(this.state.updatedAddress);
-  };
-  //   handleChange = (e) => {
-  //     const updateNameKey = "updated";
-  //     const newNameKey = "new";
-  //     console.log(e);
-  //     console.log(e.className);
-  //     if (e.className === "edit.button") {
-  //       const { name, value } = e.target;
-  //       const updatedName = updateNameKey + name;
-  //       console.log(updatedName);
-  //       this.setState({ [updatedName]: value });
-  //     } else if (e.className === "add.button") {
-  //       const { name, value } = e.target;
-  //       const newName = newNameKey + name;
-  //       console.log(newName);
-  //       this.setState({ [newName]: value });
-  //     }
-  //   };
-  handleEditAddress(
-    id,
-    city,
-    address,
-    deliveryType,
-    frequency,
-    recipientName,
-    recipientPhone
-  ) {
-    //his.setState({ updatedAddress: addressName });
-    //console.log(addressName);
-    console.log(
-      id,
-      city,
-      address,
-      deliveryType,
-      frequency,
-      recipientName,
-      recipientPhone
-    );
-
-    adminService.editAddress(
-      id,
-      city,
-      address,
-      deliveryType,
-      frequency,
-      recipientName,
-      recipientPhone
-    );
-    this.getAddresses();
-  }
-
-  handleShowEditDialog(address) {
-    this.setState({ showDialog: true, addressForEdit: address });
-  }
   // The "ADD" scenario
   handleShowAddDialog(e) {
     this.setState({ showDialog: true });
-    console.log(e);
   }
 
   handleAddAddress(
@@ -148,6 +71,97 @@ export default class AdminPage extends React.Component {
     this.getAddresses();
   }
 
+  // For the "DELETE" scenario
+  handleDelete(id, event) {
+    adminService.deleteAddress(id);
+    this.getAddresses();
+  }
+
+  // For the "UPDATE" scenario
+
+  handleEditAddress(
+    id,
+    city,
+    address,
+    deliveryType,
+    frequency,
+    recipientName,
+    recipientPhone
+  ) {
+    adminService.editAddress(
+      id,
+      city,
+      address,
+      deliveryType,
+      frequency,
+      recipientName,
+      recipientPhone
+    );
+    this.getAddresses();
+  }
+  handleShowEditDialog(address) {
+    this.setState({ showDialog: true, addressForEdit: address });
+  }
+
+  // The Addresses DIALOG
+  handleClose() {
+    this.setState({
+      showDialog: false,
+      addressForEdit: null,
+      city: null,
+      address: null,
+      deliveryType: null,
+      frequency: null,
+      recipientName: null,
+      recipientPhone: null,
+    });
+  }
+
+  //**********DRIVERS**********
+  // For the "GET" scenario
+  getDrivers() {
+    this.setState({
+      drivers: adminService.getDrivers(),
+    });
+  }
+
+  // The "ADD" scenario
+  handleShowAddDriverDialog(e) {
+    this.setState({ showDriverDialog: true });
+  }
+  handleAddDriver(firstName, lastName, phone, distributionArea) {
+    adminService.addDriver(firstName, lastName, phone, distributionArea);
+    this.getDrivers();
+  }
+
+  // The "DELETE" scenario
+  handleDeleteDriver(id, event) {
+    adminService.deleteDriver(id);
+    this.getDrivers();
+  }
+
+  // The "UPDATE" scenario
+  handleEditDriver(id, firstName, lastName, phone, distributionArea) {
+    adminService.editDriver(id, firstName, lastName, phone, distributionArea);
+    this.getDrivers();
+  }
+
+  handleShowEditDriverDialog(driver) {
+    this.setState({ showDriverDialog: true, driverForEdit: driver });
+  }
+
+  // DIALOG
+  handleCloseDriverDialog() {
+    this.setState({
+      showDriverDialog: false,
+      driverForEdit: null,
+      firstName: null,
+      lastName: null,
+      phone: null,
+      distributionArea: null,
+    });
+  }
+
   render() {
     return (
       <div>
@@ -158,18 +172,32 @@ export default class AdminPage extends React.Component {
           Add
         </button>
         <table className="addresses-table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col"> City </th>
+              <th scope="col"> Address </th>
+              <th scope="col"> Delivery Type </th>
+              <th scope="col">Frequency </th>
+              <th scope="col"> Recipient Name </th>
+              <th scope="col"> Recipient Phone </th>
+              <th scope="col"> Assigned To: </th>
+              <th scope="col"> edit </th>
+              <th scope="col"> delete </th>
+            </tr>
+          </thead>
           <tbody>
-            <thead>
-              <td>Name</td>
-            </thead>
             {this.state.addresses?.map((item) => (
               <tr key={item?.id}>
+                {/* <th scope="row">{item?.id}</th> */}
+                <td>{item?.id}</td>
                 <td>{item?.city}</td>
-                <td>
-                  <button onClick={(e) => this.handleDelete(item.id, e)}>
-                    Delete
-                  </button>
-                </td>
+                <td>{item?.address}</td>
+                <td>{item?.deliveryType}</td>
+                <td>{item?.frequency}</td>
+                <td>{item?.recipientName}</td>
+                <td>{item?.recipientPhone}</td>
+                <td>{`-----`}</td>
                 <td>
                   <button
                     className="edit-buttons"
@@ -177,7 +205,11 @@ export default class AdminPage extends React.Component {
                   >
                     Edit
                   </button>
+                  <button onClick={(e) => this.handleDelete(item.id, e)}>
+                    Delete
+                  </button>
                 </td>
+                <td></td>
               </tr>
             ))}
           </tbody>
@@ -196,8 +228,8 @@ export default class AdminPage extends React.Component {
               City:
               <input
                 type="text"
-                name="updatedCity"
-                value={this.state.updatedCity}
+                name="city"
+                value={this.state.city}
                 onChange={this.handleChange}
               ></input>
             </label>
@@ -205,8 +237,8 @@ export default class AdminPage extends React.Component {
               Address:
               <input
                 type="text"
-                name="updatedAddress"
-                value={this.state.updatedAddress}
+                name="address"
+                value={this.state.address}
                 onChange={this.handleChange}
               ></input>
             </label>
@@ -214,8 +246,8 @@ export default class AdminPage extends React.Component {
               Delivery type:
               <input
                 type="text"
-                name="updatedDeliveryType"
-                value={this.state.updatedDeliveryType}
+                name="deliveryType"
+                value={this.state.deliveryType}
                 onChange={this.handleChange}
               ></input>
             </label>
@@ -223,8 +255,8 @@ export default class AdminPage extends React.Component {
               Frequency:
               <input
                 type="text"
-                name="updatedFrequency"
-                value={this.state.updatedFrequency}
+                name="frequency"
+                value={this.state.frequency}
                 onChange={this.handleChange}
               ></input>
             </label>
@@ -232,8 +264,8 @@ export default class AdminPage extends React.Component {
               Recipient name:
               <input
                 type="text"
-                name="updatedRecipientName"
-                value={this.state.updatedRecipientName}
+                name="recipientName"
+                value={this.state.recipientName}
                 onChange={this.handleChange}
               ></input>
             </label>
@@ -241,8 +273,8 @@ export default class AdminPage extends React.Component {
               Recipient Phone number:
               <input
                 type="text"
-                name="updatedRecipientPhone"
-                value={this.state.updatedRecipientPhone}
+                name="recipientPhone"
+                value={this.state.recipientPhone}
                 onChange={this.handleChange}
               ></input>
             </label>
@@ -256,12 +288,12 @@ export default class AdminPage extends React.Component {
               onClick={() =>
                 this.handleEditAddress(
                   this.state.addressForEdit?.id,
-                  this.state.updatedCity,
-                  this.state.updatedAddress,
-                  this.state.updatedDeliveryType,
-                  this.state.updatedFrequency,
-                  this.state.updatedRecipientName,
-                  this.state.updatedRecipientPhone
+                  this.state.city,
+                  this.state.address,
+                  this.state.deliveryType,
+                  this.state.frequency,
+                  this.state.recipientName,
+                  this.state.recipientPhone
                 )
               }
             >
@@ -269,19 +301,142 @@ export default class AdminPage extends React.Component {
             </Button>
             <Button
               variant="primary"
-              //   style={{ display: "none" }}
               onClick={() =>
                 this.handleAddAddress(
-                  this.state.newCity,
-                  this.state.newAddress,
-                  this.state.newDeliveryType,
-                  this.state.newFrequency,
-                  this.state.newRecipientName,
-                  this.state.newRecipientPhone
+                  this.state.city,
+                  this.state.address,
+                  this.state.deliveryType,
+                  this.state.frequency,
+                  this.state.recipientName,
+                  this.state.recipientPhone
                 )
               }
             >
-              Add Address
+              Add The Address
+            </Button>
+          </Modal.Footer>
+        </Modal>
+        <button
+          className="add-button "
+          onClick={(e) => this.handleShowAddDriverDialog(e)}
+        >
+          Add
+        </button>
+        <table className="drivers-table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col"> First Name </th>
+              <th scope="col"> Last Name</th>
+              <th scope="col"> Phone </th>
+              <th scope="col">Distribution Area </th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.drivers?.map((item) => (
+              <tr key={item?.id}>
+                {/* <th scope="row">{item?.id}</th> */}
+                <td>{item?.id}</td>
+                <td>{item?.firstName}</td>
+                <td>{item?.lastName}</td>
+                <td>{item?.phone}</td>
+                <td>{item?.distributionArea}</td>
+                <td>
+                  <button
+                    className="edit-buttons"
+                    onClick={(e) => this.handleShowEditDriverDialog(item, e)}
+                  >
+                    Edit
+                  </button>
+                  <button onClick={(e) => this.handleDeleteDriver(item.id, e)}>
+                    Delete
+                  </button>
+                </td>
+                <td></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <Modal
+          show={this.state.showDriverDialog}
+          onHide={this.handleCloseDriverDialog.bind(this)}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Modal heading</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {/* <p>{this.state.addressForEdit?.name}</p> */}
+            <label>
+              First Name:
+              <input
+                type="text"
+                name="firstName"
+                value={this.state.firstName}
+                onChange={this.handleChange}
+              ></input>
+            </label>
+            <label>
+              Address:
+              <input
+                type="text"
+                name="lastName"
+                value={this.state.lastName}
+                onChange={this.handleChange}
+              ></input>
+            </label>
+            <label>
+              Delivery type:
+              <input
+                type="text"
+                name="phone"
+                value={this.state.phone}
+                onChange={this.handleChange}
+              ></input>
+            </label>
+            <label>
+              Frequency:
+              <input
+                type="text"
+                name="distributionArea"
+                value={this.state.distributionArea}
+                onChange={this.handleChange}
+              ></input>
+            </label>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              variant="secondary"
+              onClick={() => this.handleCloseDriverDialog()}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="primary"
+              onClick={() =>
+                this.handleEditDriver(
+                  this.state.driverForEdit?.id,
+                  this.state.firstName,
+                  this.state.lastName,
+                  this.state.phone,
+                  this.state.distributionArea
+                )
+              }
+            >
+              Save Changes
+            </Button>
+            <Button
+              variant="primary"
+              onClick={() =>
+                this.handleAddDriver(
+                  this.state.firstName,
+                  this.state.lastName,
+                  this.state.phone,
+                  this.state.distributionArea
+                )
+              }
+            >
+              Add Driver
             </Button>
           </Modal.Footer>
         </Modal>
