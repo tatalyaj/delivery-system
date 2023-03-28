@@ -2,6 +2,7 @@ import React from "react";
 import Admin from "../classes/admin";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import AddressDialog from "./addressDialog";
 
 const adminService = new Admin();
 
@@ -12,7 +13,7 @@ export default class AdminPage extends React.Component {
       // ADDRESSES
       addresses: adminService.getAddresses(),
       addressForEdit: null,
-      showDialog: false,
+      showAddressDialog: false,
       showDriverDialog: false,
       city: null,
       address: null,
@@ -49,17 +50,24 @@ export default class AdminPage extends React.Component {
 
   // The "ADD" scenario
   handleShowAddDialog(e) {
-    this.setState({ showDialog: true });
+    this.setState({ showAddressDialog: true });
   }
 
-  handleAddAddress(
+  handleAddressChanged = (address) => {
+    typeof address.id === "number"
+      ? this.handleEditAddress(address)
+      : this.handleAddAddress(address);
+    console.log(address);
+  };
+
+  handleAddAddress({
     city,
     address,
     deliveryType,
     frequency,
     recipientName,
-    recipientPhone
-  ) {
+    recipientPhone,
+  }) {
     adminService.addAddress(
       city,
       address,
@@ -79,15 +87,15 @@ export default class AdminPage extends React.Component {
 
   // For the "UPDATE" scenario
 
-  handleEditAddress(
+  handleEditAddress({
     id,
     city,
     address,
     deliveryType,
     frequency,
     recipientName,
-    recipientPhone
-  ) {
+    recipientPhone,
+  }) {
     adminService.editAddress(
       id,
       city,
@@ -99,14 +107,18 @@ export default class AdminPage extends React.Component {
     );
     this.getAddresses();
   }
+
   handleShowEditDialog(address) {
-    this.setState({ showDialog: true, addressForEdit: address });
+    this.setState({
+      showAddressDialog: true,
+      addressForEdit: address,
+    });
   }
 
   // The Addresses DIALOG
   handleClose() {
     this.setState({
-      showDialog: false,
+      showAddressDialog: false,
       addressForEdit: null,
       city: null,
       address: null,
@@ -214,108 +226,14 @@ export default class AdminPage extends React.Component {
             ))}
           </tbody>
         </table>
+        <AddressDialog
+          key={this.state.addressForEdit?.id}
+          showDialog={this.state.showAddressDialog}
+          addressForEdit={this.state.addressForEdit}
+          onAddressChanged={this.handleAddressChanged}
+          onDialogClose={this.handleClose.bind(this)}
+        />
 
-        <Modal
-          show={this.state.showDialog}
-          onHide={this.handleClose.bind(this)}
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {/* <p>{this.state.addressForEdit?.name}</p> */}
-            <label>
-              City:
-              <input
-                type="text"
-                name="city"
-                value={this.state.city}
-                onChange={this.handleChange}
-              ></input>
-            </label>
-            <label>
-              Address:
-              <input
-                type="text"
-                name="address"
-                value={this.state.address}
-                onChange={this.handleChange}
-              ></input>
-            </label>
-            <label>
-              Delivery type:
-              <input
-                type="text"
-                name="deliveryType"
-                value={this.state.deliveryType}
-                onChange={this.handleChange}
-              ></input>
-            </label>
-            <label>
-              Frequency:
-              <input
-                type="text"
-                name="frequency"
-                value={this.state.frequency}
-                onChange={this.handleChange}
-              ></input>
-            </label>
-            <label>
-              Recipient name:
-              <input
-                type="text"
-                name="recipientName"
-                value={this.state.recipientName}
-                onChange={this.handleChange}
-              ></input>
-            </label>
-            <label>
-              Recipient Phone number:
-              <input
-                type="text"
-                name="recipientPhone"
-                value={this.state.recipientPhone}
-                onChange={this.handleChange}
-              ></input>
-            </label>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={() => this.handleClose()}>
-              Cancel
-            </Button>
-            <Button
-              variant="primary"
-              onClick={() =>
-                this.handleEditAddress(
-                  this.state.addressForEdit?.id,
-                  this.state.city,
-                  this.state.address,
-                  this.state.deliveryType,
-                  this.state.frequency,
-                  this.state.recipientName,
-                  this.state.recipientPhone
-                )
-              }
-            >
-              Save Changes
-            </Button>
-            <Button
-              variant="primary"
-              onClick={() =>
-                this.handleAddAddress(
-                  this.state.city,
-                  this.state.address,
-                  this.state.deliveryType,
-                  this.state.frequency,
-                  this.state.recipientName,
-                  this.state.recipientPhone
-                )
-              }
-            >
-              Add The Address
-            </Button>
-          </Modal.Footer>
-        </Modal>
         <button
           className="add-button "
           onClick={(e) => this.handleShowAddDriverDialog(e)}
