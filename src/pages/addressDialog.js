@@ -8,7 +8,7 @@ export default class AddressDialog extends React.Component {
   constructor(props) {
     super(props);
     this.props = props;
-    console.log(props);
+    //console.log(props);
 
     this.state = {
       addressForEdit: this.props?.addressForEdit
@@ -26,20 +26,19 @@ export default class AddressDialog extends React.Component {
       showDialog: false,
     };
   }
-
+  // HANDLE CLOSE DIALOG
   handleClose() {
     this.props.onDialogClose();
   }
-
+  // HANDLE THE SAVE CHANGES BUTTON
   handleSaveAddress = (address) => {
     this.props.onAddressChanged(address);
     this.handleClose();
   };
-
+  // HANDLE CHANGE
   handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
-    // this.setState({ ...this.state, [e.target?.name]: value });
+    //console.log(name, value);
     this.setState({
       addressForEdit: {
         ...this.state.addressForEdit,

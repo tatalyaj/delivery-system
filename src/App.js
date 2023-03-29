@@ -10,13 +10,13 @@ import MyNavbar from "./components/Navbar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages";
 //import Manager from "./pages/admin2";
-import AdminPage from "./pages/admin2";
+import AdminPage from "./pages/admin";
 import Driver from "./pages/delivery";
 
 const navItems = [
   {
     text: "Manager",
-    link: "/admin2",
+    link: "/admin",
   },
   {
     text: "Driver",
@@ -41,7 +41,7 @@ function App() {
           <Col>
             <Routes>
               <Route exact path="/" element={<Home />} />
-              <Route path="/admin2" element={<AdminPage />} />
+              <Route path="/admin" element={<AdminPage />} />
               <Route path="/delivery" element={<Driver />} />
             </Routes>
           </Col>

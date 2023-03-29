@@ -1,300 +1,306 @@
-import { useState } from "react";
-import Select from "react-select";
-import Button from "@mui/material/Button";
-import Admin from "./classes/admin";
+import React from "react";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import AdminAddresses from "../classes/adminAddresses";
+import AdminDrivers from "../classes/adminDrivers";
+import AddressDialog from "./addressDialog";
+import DriverDialog from "./driverDialog";
 
-const adminService = new Admin();
-const Manager = () => {
-  //******************USE-STATES******************
-  // ADDRESSSES
-  const [addresses, setAddresses] = useState([
-    { id: 0, name: "Jerusalem", frequency: 0 },
-    { id: 1, name: "Haifa", frequency: 0 },
-    { id: 2, name: "Tel-Aviv", frequency: 0 },
-    { id: 3, name: "Eilat", frequency: 0 },
-    { id: 4, name: "Ra'anana", frequency: 0 },
-    { id: 5, name: "Zichron", frequency: 0 },
-    { id: 6, name: "Tiberia", frequency: 0 },
-  ]);
-  const [addressesOptions, setAddressesOptions] = useState([]);
-  const [addrName, setAddrName] = useState("");
-  const [addrUpdatedName, setUpdatedAddrName] = useState("");
-  // DRIVERS
-  const [drivers, setDrivers] = useState([
-    { id: 0, name: "Jason" },
-    { id: 1, name: "Johanna" },
-    { id: 2, name: "Ray" },
-    { id: 3, name: "John" },
-    { id: 4, name: "Lana" },
-    { id: 5, name: "Emma" },
-    { id: 6, name: "Harry" },
-  ]);
-  const [driversOptions, setDriversOptions] = useState([]);
-  const [driverName, setDriverName] = useState("");
-  const [driverUpdatedName, setUpdatedDriverName] = useState("");
-  //  TYPE OF DELIVERY
-  const [types, setTypes] = useState([
-    { id: 0, name: "food" },
-    { id: 1, name: "medicine" },
-  ]);
-  const [typesOptions, setTypesOptions] = useState([]);
-  // ******************CONSTANTS******************
-  // ADDRESSSES
-  //let nextAddrId = addresses[addresses.length - 1].id;
+const adminServiceAddress = new AdminAddresses();
+const adminServiceDriver = new AdminDrivers();
 
-  // DRIVERS
-  let nextDriverId = drivers[drivers.length - 1].id;
-  // ******************HANDLE FUNCTIONS******************
-  // ADDRESSSES
-  // THE "GET" SCENARIO
-  const handleAddressesOptions = (addressesOptions) => {
-    setAddressesOptions(addressesOptions);
-    //console.log(addressesOptions.length);
-    // In each Select the FREQUENCY goes up by one
-    for (let i = 0; i <= addressesOptions.length - 1; i++) {
-      addressesOptions[i].frequency++;
-      //console.log(addressesOptions[i]);
-    }
+export default class AdminPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      // ADDRESSES
+      addresses: adminServiceAddress.getAddresses(),
+      addressForEdit: null,
+      showAddressDialog: false,
+      city: null,
+      address: null,
+      deliveryType: null,
+      frequency: null,
+      recipientName: null,
+      recipientPhone: null,
+      // DRIVERS
+      drivers: adminServiceDriver.getDrivers(),
+      driverForEdit: null,
+      showDriverDialog: false,
+      firstName: null,
+      lastName: null,
+      phone: null,
+      distributionArea: null,
+    };
+    // this.getAddresses();
+  }
+
+  //**********BOTH ADDRESSES AND DRIVERS**********
+  handleChange = (e) => {
+    const { name, value } = e.target;
+    console.log(name, value);
+    // this.setState({ ...this.state, [e.target?.name]: value });
+    this.setState({ [name]: value });
   };
 
-  // THE "ADD" SCENARIO
-  // The input value name
+  //**********ADDRESSES**********
+  // For the "GET" scenario
+  getAddresses() {
+    this.setState({
+      addresses: adminServiceAddress.getAddresses(),
+    });
+  }
 
-  const handleSetAddrName = (e) => setAddrName(e.target.value);
-
-  //console.log(addrName);
-  // The value added by the push on the "ADD BUTTON"
-  // const handleAddAddresses = () => {
-  //   setAddrName("");
-  //   var updatedAddrList = [...addresses];
-  //   updatedAddrList = [
-  //     ...addresses,
-  //     { id: nextAddrId++, name: addrName, frequency: 0 },
-  //   ];
-  //   setAddresses(updatedAddrList);
-  //   //console.log(updatedAddrList);
-  // };
-  const handleAddAddresses = () => {
-    setAddrName("");
-    adminService.addAddress(addrName, 0);
-  };
-  // THE "DELETE" SCENARIO
-  const handleDeleteAddresses = (addressesChosen) => {
-    for (let i = 0; i <= addressesChosen.length - 1; i++)
-      addresses.splice(addressesChosen[i].id, 1);
-    //console.log(addresses);
-
-    // var chosenIDList = [];
-    // var chosenAddr = [];
-    // // addressesChosen - Its a list of the addresses The user chose
-    // for (let i = 0; i <= addressesChosen.length - 1; i++) {
-    //   chosenIDList[i] = addressesChosen[i].id;
-    // }
-    // // console.log(chosenIDList);
-    // for (let i = 0; i <= chosenIDList.length - 1; i++) {
-    //   chosenAddr[i] = addresses.filter((single) => {
-    //     return single.id === chosenIDList[i]
-    //       ? addresses.splice(single.id, 1)
-    //       : addresses;
-    //   });
-    // }
-  };
-  // THE "UPDATE" SCENARIO
-  const handleUpdatedAddrName = (e) => {
-    setUpdatedAddrName(e.target.value);
-  };
-  // The value updated by the click on the "UPDATE BUTTON"
-  const handleUpdateAddresses = (addressesChosen) => {
-    setUpdatedAddrName("");
-    for (let i = 0; i <= addressesChosen.length - 1; i++) {
-      addressesChosen[i].name = addrUpdatedName;
-      //console.log(addressesChosen);
-    }
+  // For the "ADD" and "UPDATE" scenario - it chooses the func based on whether there's an ID meaning - it's the "UPDATE" scenario or else it's the "ADD" scenario
+  handleAddressChanged = (address) => {
+    typeof address.id === "number"
+      ? this.handleEditAddress(address)
+      : this.handleAddAddress(address);
+    //console.log(address);
   };
 
-  // DRIVERS
-  // THE "GET" SCENARIO
-  const handleDriversOptions = (driversOptions) =>
-    setDriversOptions(driversOptions);
-  // THE "ADD" SCENARIO
-  // The input value name
-  const handleSetDriversName = (e) => setDriverName(e.target.value);
-  //console.log(driverName);
-  // The value added by the click on the "ADD BUTTON"
-  const handleAddDrivers = () => {
-    setDriverName("");
-    var updatedDriversList = [...drivers];
-    updatedDriversList = [...drivers, { id: nextDriverId++, name: driverName }];
-    setDrivers(updatedDriversList);
-    //console.log(updatedDriversList);
-  };
-  // THE "DELETE" SCENARIO
-  const handleDeleteDrivers = (driversChosen) => {
-    for (let i = 0; i <= driversChosen.length - 1; i++)
-      drivers.splice(driversChosen[i].id, 1);
-    //console.log(drivers);
+  // The "ADD" scenario
+  handleAddAddress({
+    city,
+    address,
+    deliveryType,
+    frequency,
+    recipientName,
+    recipientPhone,
+  }) {
+    adminServiceAddress.addAddress(
+      city,
+      address,
+      deliveryType,
+      frequency,
+      recipientName,
+      recipientPhone
+    );
+    this.getAddresses();
+  }
 
-    // var chosenIDList = [];
-    // var chosenDriver = [];
-    // // driversChosen - Its a list of the drivers The user chose
-    // for (let i = 0; i <= driversChosen.length - 1; i++) {
-    //   chosenIDList[i] = driversChosen[i].id;
-    // }
-    // // console.log(chosenIDList);
-    // for (let i = 0; i <= chosenIDList.length - 1; i++) {
-    //   chosenDriver[i] = drivers.filter((single) => {
-    //     return single.id === chosenIDList[i]
-    //       ? drivers.splice(single.id, 1)
-    //       : drivers;
-    //   });
-    // }
+  // The Addresses DIALOG - IN ADD SCENARIO
+  handleShowAddDialog(e) {
+    this.setState({ showAddressDialog: true });
+  }
+
+  // For the "DELETE" scenario
+  handleDelete(id, event) {
+    adminServiceAddress.deleteAddress(id);
+    this.getAddresses();
+  }
+
+  // For the "UPDATE" scenario
+  handleEditAddress({
+    id,
+    city,
+    address,
+    deliveryType,
+    frequency,
+    recipientName,
+    recipientPhone,
+  }) {
+    adminServiceAddress.editAddress(
+      id,
+      city,
+      address,
+      deliveryType,
+      frequency,
+      recipientName,
+      recipientPhone
+    );
+    this.getAddresses();
+  }
+  // The Addresses DIALOG - SHOW IN EDIT SCENARIO
+  handleShowEditDialog(address) {
+    this.setState({
+      showAddressDialog: true,
+      addressForEdit: address,
+    });
+  }
+
+  // The Addresses DIALOG - HANDLE CLOSE
+  handleClose() {
+    this.setState({
+      showAddressDialog: false,
+      addressForEdit: null,
+      city: null,
+      address: null,
+      deliveryType: null,
+      frequency: null,
+      recipientName: null,
+      recipientPhone: null,
+    });
+  }
+
+  // //**********DRIVERS**********
+  // // For the "GET" scenario
+  getDrivers() {
+    this.setState({
+      drivers: adminServiceDriver.getDrivers(),
+    });
+  }
+
+  // For the "ADD" and "UPDATE" scenario - it chooses the func based on whether there's an ID meaning - it's the "UPDATE" scenario or else it's the "ADD" scenario
+  handleDriverChanged = (driver) => {
+    typeof driver.id === "number"
+      ? this.handleEditDriver(driver)
+      : this.handleAddDriver(driver);
+    //console.log(driver);
   };
-  // THE "UPDATE" SCENARIO
-  const handleUpdatedDriverName = (e) => {
-    setUpdatedDriverName(e.target.value);
-    //console.log(e.target.value);
-  };
-  // The value updated by the click on the "UPDATE BUTTON"
-  const handleUpdateDriver = (driversChosen) => {
-    setUpdatedDriverName("");
-    for (let i = 0; i <= driversChosen.length - 1; i++) {
-      driversChosen[i].name = driverUpdatedName;
-      //console.log(driversChosen);
-    }
-  };
-  //  TYPE OF DELIVERY
-  // THE "GET" SCENARIO
-  const handleTypesOptions = (typesOptions) => setTypesOptions(typesOptions);
-  return (
-    <div className="admin">
-      <div className="addresses">
-        <Select
-          isMulti
-          isSearchable
-          maxMenuHeight={200}
-          isClearable={false}
-          placeholder="Select an address..."
-          options={addresses}
-          getOptionLabel={(option) => option.name}
-          getOptionValue={(option) => option.name}
-          value={addressesOptions}
-          onChange={handleAddressesOptions}
+
+  // The "ADD" scenario
+  handleAddDriver({ firstName, lastName, phone, distributionArea }) {
+    adminServiceDriver.addDriver(firstName, lastName, phone, distributionArea);
+    this.getDrivers();
+  }
+  // The Driver DIALOG - IN ADD SCENARIO
+  handleShowAddDriverDialog(e) {
+    this.setState({ showDriverDialog: true });
+  }
+
+  // The "DELETE" scenario
+  handleDeleteDriver(id, event) {
+    adminServiceDriver.deleteDriver(id);
+    this.getDrivers();
+  }
+
+  // The "UPDATE" scenario
+  handleEditDriver({ id, firstName, lastName, phone, distributionArea }) {
+    adminServiceDriver.editDriver(
+      id,
+      firstName,
+      lastName,
+      phone,
+      distributionArea
+    );
+    this.getDrivers();
+  }
+  // The Driver DIALOG - SHOW IN EDIT SCENARIO
+  handleShowEditDriverDialog(driver) {
+    this.setState({ showDriverDialog: true, driverForEdit: driver });
+  }
+
+  // The Driver DIALOG - HANDLE CLOSE
+  handleCloseDriverDialog() {
+    this.setState({
+      showDriverDialog: false,
+      driverForEdit: null,
+      firstName: null,
+      lastName: null,
+      phone: null,
+      distributionArea: null,
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <button
+          className="add-button "
+          onClick={(e) => this.handleShowAddDialog(e)}
+        >
+          Add
+        </button>
+        <table className="addresses-table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col"> City </th>
+              <th scope="col"> Address </th>
+              <th scope="col"> Delivery Type </th>
+              <th scope="col">Frequency </th>
+              <th scope="col"> Recipient Name </th>
+              <th scope="col"> Recipient Phone </th>
+              <th scope="col"> Assigned To: </th>
+              <th scope="col"> edit </th>
+              <th scope="col"> delete </th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.addresses?.map((item) => (
+              <tr key={item?.id}>
+                {/* <th scope="row">{item?.id}</th> */}
+                <td>{item?.id}</td>
+                <td>{item?.city}</td>
+                <td>{item?.address}</td>
+                <td>{item?.deliveryType}</td>
+                <td>{item?.frequency}</td>
+                <td>{item?.recipientName}</td>
+                <td>{item?.recipientPhone}</td>
+                <td>{`-----`}</td>
+                <td>
+                  <button
+                    className="edit-buttons"
+                    onClick={(e) => this.handleShowEditDialog(item, e)}
+                  >
+                    Edit
+                  </button>
+                  <button onClick={(e) => this.handleDelete(item.id, e)}>
+                    Delete
+                  </button>
+                </td>
+                <td></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <AddressDialog
+          key={this.state.addressForEdit?.id}
+          showDialog={this.state.showAddressDialog}
+          addressForEdit={this.state.addressForEdit}
+          onAddressChanged={this.handleAddressChanged}
+          onDialogClose={this.handleClose.bind(this)}
         />
-        <div className="address-buttons">
-          <div
-            className="address-add-button"
-            style={{ marginTop: 40, marginBottom: 40 }}
-          >
-            <input value={addrName} onChange={handleSetAddrName} />
-            <Button
-              onClick={handleAddAddresses}
-              color="primary"
-              style={{ marginLeft: 20 }}
-            >
-              Add Address
-            </Button>
-          </div>
-          <div
-            className="address-delete-button"
-            style={{ marginTop: 40, marginBottom: 40 }}
-          >
-            <Button
-              onClick={() => handleDeleteAddresses(addressesOptions)}
-              //onClick={handleDeleteAddresses()}
-              color="primary"
-              style={{ marginLeft: 20 }}
-            >
-              Delete Address
-            </Button>
-          </div>
-          <div
-            className="address-update-button"
-            style={{ marginTop: 40, marginBottom: 40 }}
-          >
-            <input value={addrUpdatedName} onChange={handleUpdatedAddrName} />
-            <Button
-              onClick={() => handleUpdateAddresses(addressesOptions)}
-              //onClick={handleDeleteAddresses()}
-              color="primary"
-              style={{ marginLeft: 20 }}
-            >
-              Update Address
-            </Button>
-          </div>
-        </div>
-      </div>
-      <div className="drivers">
-        <Select
-          isMulti
-          isSearchable
-          maxMenuHeight={200}
-          isClearable={false}
-          placeholder="Select a driver..."
-          options={drivers}
-          getOptionLabel={(option) => option.name}
-          getOptionValue={(option) => option.name}
-          value={driversOptions}
-          onChange={handleDriversOptions}
-        />
-        <div className="drivers-buttons">
-          <div
-            className="drivers-add-button"
-            style={{ marginTop: 40, marginBottom: 40 }}
-          >
-            <input value={driverName} onChange={handleSetDriversName} />
-            <Button
-              onClick={handleAddDrivers}
-              color="primary"
-              style={{ marginLeft: 20 }}
-            >
-              Add Driver
-            </Button>
-          </div>
-          <div
-            className="drivers-delete-button"
-            style={{ marginTop: 40, marginBottom: 40 }}
-          >
-            <Button
-              onClick={() => handleDeleteDrivers(driversOptions)}
-              color="primary"
-              style={{ marginLeft: 20 }}
-            >
-              Delete Driver
-            </Button>
-          </div>
-          <div
-            className="drivers-update-button"
-            style={{ marginTop: 40, marginBottom: 40 }}
-          >
-            <input
-              value={driverUpdatedName}
-              onChange={handleUpdatedDriverName}
-            />
-            <Button
-              onClick={() => handleUpdateDriver(driversOptions)}
-              color="primary"
-              style={{ marginLeft: 20 }}
-            >
-              Update Driver
-            </Button>
-          </div>
-        </div>
-      </div>
-      <div className="types-of-delivery">
-        <Select
-          isMulti
-          isSearchable
-          maxMenuHeight={200}
-          isClearable={false}
-          placeholder="Select a delivery type..."
-          options={types}
-          getOptionLabel={(option) => option.name}
-          getOptionValue={(option) => option.name}
-          value={typesOptions}
-          onChange={handleTypesOptions}
+        <button
+          className="add-button "
+          onClick={(e) => this.handleShowAddDriverDialog(e)}
+        >
+          Add
+        </button>
+        <table className="drivers-table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col"> First Name </th>
+              <th scope="col"> Last Name</th>
+              <th scope="col"> Phone </th>
+              <th scope="col">Distribution Area </th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.drivers?.map((item) => (
+              <tr key={item?.id}>
+                {/* <th scope="row">{item?.id}</th> */}
+                <td>{item?.id}</td>
+                <td>{item?.firstName}</td>
+                <td>{item?.lastName}</td>
+                <td>{item?.phone}</td>
+                <td>{item?.distributionArea}</td>
+                <td>
+                  <button
+                    className="edit-buttons"
+                    onClick={(e) => this.handleShowEditDriverDialog(item, e)}
+                  >
+                    Edit
+                  </button>
+                  <button onClick={(e) => this.handleDeleteDriver(item.id, e)}>
+                    Delete
+                  </button>
+                </td>
+                <td></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <DriverDialog
+          key={this.state.driverForEdit?.id}
+          showDialog={this.state.showDriverDialog}
+          driverForEdit={this.state.driverForEdit}
+          onDriverChanged={this.handleDriverChanged}
+          onDialogClose={this.handleCloseDriverDialog.bind(this)}
         />
       </div>
-    </div>
-  );
-};
-export default Manager;
+    );
+  }
+}
