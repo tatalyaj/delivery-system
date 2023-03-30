@@ -9,14 +9,19 @@ import "./App.css";
 import MyNavbar from "./components/Navbar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages";
-//import Manager from "./pages/admin2";
-import AdminPage from "./pages/admin";
+import AdminAddressesPage from "./pages/adminAddresses";
+import AdminDriversPage from "./pages/adminDrivers";
+//import AdminPage from "./pages/admin";
 import Driver from "./pages/delivery";
 
 const navItems = [
   {
-    text: "Manager",
-    link: "/admin",
+    text: "Manager: Addresses",
+    link: "/adminAddresses",
+  },
+  {
+    text: "Manager: Drivers",
+    link: "/adminDrivers",
   },
   {
     text: "Driver",
@@ -41,7 +46,8 @@ function App() {
           <Col>
             <Routes>
               <Route exact path="/" element={<Home />} />
-              <Route path="/admin" element={<AdminPage />} />
+              <Route path="/adminAddresses" element={<AdminAddressesPage />} />
+              <Route path="/adminDrivers" element={<AdminDriversPage />} />
               <Route path="/delivery" element={<Driver />} />
             </Routes>
           </Col>

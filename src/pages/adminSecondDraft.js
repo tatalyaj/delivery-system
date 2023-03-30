@@ -1,6 +1,4 @@
 import React from "react";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
 import AdminAddresses from "../classes/adminAddresses";
 import AdminDrivers from "../classes/adminDrivers";
 import AddressDialog from "./addressDialog";
@@ -34,14 +32,6 @@ export default class AdminPage extends React.Component {
     };
     // this.getAddresses();
   }
-
-  //**********BOTH ADDRESSES AND DRIVERS**********
-  handleChange = (e) => {
-    const { name, value } = e.target;
-    console.log(name, value);
-    // this.setState({ ...this.state, [e.target?.name]: value });
-    this.setState({ [name]: value });
-  };
 
   //**********ADDRESSES**********
   // For the "GET" scenario
@@ -146,7 +136,8 @@ export default class AdminPage extends React.Component {
     typeof driver.id === "number"
       ? this.handleEditDriver(driver)
       : this.handleAddDriver(driver);
-    //console.log(driver);
+    //
+    console.log(driver);
   };
 
   // The "ADD" scenario
