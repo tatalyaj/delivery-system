@@ -27,6 +27,7 @@ export default class DriverDialog extends React.Component {
   }
   // HANDLE THE SAVE CHANGES BUTTON
   handleSaveDriver = (driver) => {
+    //console.log(typeof this.props.onDriverChanged);
     this.props.onDriverChanged(driver);
     this.handleClose();
   };

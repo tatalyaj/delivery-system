@@ -120,48 +120,12 @@ export default class AdminAddressesPage extends React.Component {
         >
           Add
         </button>
-        <table className="addresses-table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col"> City </th>
-              <th scope="col"> Address </th>
-              <th scope="col"> Delivery Type </th>
-              <th scope="col">Frequency </th>
-              <th scope="col"> Recipient Name </th>
-              <th scope="col"> Recipient Phone </th>
-              <th scope="col"> Assigned To: </th>
-              <th scope="col"> edit </th>
-              <th scope="col"> delete </th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.state.addresses?.map((item) => (
-              <tr key={item?.id}>
-                <td>{item?.id}</td>
-                <td>{item?.city}</td>
-                <td>{item?.address}</td>
-                <td>{item?.deliveryType}</td>
-                <td>{item?.frequency}</td>
-                <td>{item?.recipientName}</td>
-                <td>{item?.recipientPhone}</td>
-                <td>{`-----`}</td>
-                <td>
-                  <button
-                    className="edit-buttons"
-                    onClick={(e) => this.handleShowEditDialog(item, e)}
-                  >
-                    Edit
-                  </button>
-                  <button onClick={(e) => this.handleDelete(item.id, e)}>
-                    Delete
-                  </button>
-                </td>
-                <td></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <AddressTable
+          key={this.state.addresses.id}
+          addresses={this.state.addresses}
+          onEditClick={this.handleShowEditDialog.bind(this)}
+          onDelete={this.handleDelete.bind(this)}
+        />
         <AddressDialog
           key={this.state.addressForEdit?.id}
           showDialog={this.state.showAddressDialog}
