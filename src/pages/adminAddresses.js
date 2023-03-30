@@ -1,7 +1,7 @@
 import React from "react";
 import AdminAddresses from "../classes/adminAddresses";
 import AddressDialog from "./addressDialog";
-import AddressTable from "./addressesTable";
+import AddressTable from "./addressTable";
 
 const adminService = new AdminAddresses();
 

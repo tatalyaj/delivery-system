@@ -1,6 +1,7 @@
 import React from "react";
 import AdminDrivers from "../classes/adminDrivers";
 import DriverDialog from "./driverDialog";
+import DriverTable from "./driverTable";
 
 const adminService = new AdminDrivers();
 
@@ -82,41 +83,12 @@ export default class AdminDriversPage extends React.Component {
         >
           Add
         </button>
-        <table className="drivers-table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col"> First Name </th>
-              <th scope="col"> Last Name</th>
-              <th scope="col"> Phone </th>
-              <th scope="col">Distribution Area </th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.state.drivers?.map((item) => (
-              <tr key={item?.id}>
-                {/* <th scope="row">{item?.id}</th> */}
-                <td>{item?.id}</td>
-                <td>{item?.firstName}</td>
-                <td>{item?.lastName}</td>
-                <td>{item?.phone}</td>
-                <td>{item?.distributionArea}</td>
-                <td>
-                  <button
-                    className="edit-buttons"
-                    onClick={(e) => this.handleShowEditDriverDialog(item, e)}
-                  >
-                    Edit
-                  </button>
-                  <button onClick={(e) => this.handleDeleteDriver(item.id, e)}>
-                    Delete
-                  </button>
-                </td>
-                <td></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <DriverTable
+          key={this.state.drivers.id}
+          drivers={this.state.drivers}
+          onEditClick={this.handleShowEditDriverDialog.bind(this)}
+          onDelete={this.handleDeleteDriver.bind(this)}
+        />
         <DriverDialog
           key={this.state.driverForEdit?.id}
           showDialog={this.state.showDriverDialog}
