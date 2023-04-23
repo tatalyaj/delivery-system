@@ -9,7 +9,7 @@ export default class AdminDriversPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      drivers: adminService.getDrivers(),
+      drivers: [],
       driverForEdit: null,
       showDriverDialog: false,
       firstName: null,
@@ -17,14 +17,20 @@ export default class AdminDriversPage extends React.Component {
       phone: null,
       distributionArea: null,
     };
-    // this.getAddresses();
   }
 
   // // For the "GET" scenario
-  getDrivers() {
+  async getDrivers() {
+    const drivers = await adminService.getDrivers();
+
     this.setState({
-      drivers: adminService.getDrivers(),
+      drivers: drivers,
     });
+  }
+
+  // component is ready for action
+  componentDidMount() {
+    this.getDrivers().then();
   }
 
   // For the "ADD" and "UPDATE" scenario - it chooses the func based on whether there's an ID meaning - it's the "UPDATE" scenario or else it's the "ADD" scenario

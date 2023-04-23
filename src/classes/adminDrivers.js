@@ -1,6 +1,14 @@
 import { drivers } from "./mock-data";
 export default class AdminDrivers {
-  getDrivers() {
+  async getDrivers() {
+    let drivers;
+    try {
+      const res = await fetch("http://localhost:5000/drivers");
+      drivers = (await res.json()).drivers;
+    } catch (e) {
+      drivers = [];
+    }
+
     return drivers;
   }
   addDriver(newFirstName, newLastName, newPhone, newDistributionArea) {

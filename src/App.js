@@ -13,48 +13,75 @@ import AdminAddressesPage from "./pages/adminAddresses";
 import AdminDriversPage from "./pages/adminDrivers";
 //import AdminPage from "./pages/admin";
 import Driver from "./pages/delivery";
+//import "./server";
 
-const navItems = [
-  {
-    text: "Manager: Addresses",
-    link: "/adminAddresses",
-  },
-  {
-    text: "Manager: Drivers",
-    link: "/adminDrivers",
-  },
-  {
-    text: "Driver",
-    link: "/delivery",
-  },
-  {
-    text: "Home",
-    link: "/",
-  },
-];
+class App extends React.Component {
+  state = {
+    data: null,
+  };
 
-function App() {
-  return (
-    <Container fluid>
-      <Router>
-        <Row>
-          <Col>
-            <MyNavbar items={navItems} />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Routes>
-              <Route exact path="/" element={<Home />} />
-              <Route path="/adminAddresses" element={<AdminAddressesPage />} />
-              <Route path="/adminDrivers" element={<AdminDriversPage />} />
-              <Route path="/delivery" element={<Driver />} />
-            </Routes>
-          </Col>
-        </Row>
-      </Router>
-    </Container>
-  );
+  componentDidMount() {
+    this.callBackendAPI()
+      .then((res) => this.setState({ data: res.express }))
+      .catch((err) => console.log(err));
+  }
+  // fetching the GET route from the Express server which matches the GET route from server.js
+  callBackendAPI = async () => {
+    const response = await fetch("/express_backend");
+    const body = await response.json();
+
+    if (response.status !== 200) {
+      throw Error(body.message);
+    }
+    return body;
+  };
+
+  navItems = [
+    {
+      text: "Manager: Addresses",
+      link: "/adminAddresses",
+    },
+    {
+      text: "Manager: Drivers",
+      link: "/adminDrivers",
+    },
+    {
+      text: "Driver",
+      link: "/delivery",
+    },
+    {
+      text: "Home",
+      link: "/",
+    },
+  ];
+
+  render() {
+    return (
+      <Container fluid>
+        <Router>
+          <Row>
+            <Col>
+              <MyNavbar items={this.navItems} />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Routes>
+                <Route exact path="/" element={<Home />} />
+                <Route
+                  path="/adminAddresses"
+                  element={<AdminAddressesPage />}
+                />
+                <Route path="/adminDrivers" element={<AdminDriversPage />} />
+                <Route path="/delivery" element={<Driver />} />
+              </Routes>
+            </Col>
+          </Row>
+        </Router>
+      </Container>
+    );
+  }
 }
-
 export default App;
+/*"start": "react-scripts start",*/
+/*"start": "react-scripts --openssl-legacy-provider start",*/
