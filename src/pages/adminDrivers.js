@@ -43,34 +43,47 @@ export default class AdminDriversPage extends React.Component {
   };
 
   // The "ADD" scenario
-  handleAddDriver({ firstName, lastName, phone, distributionArea }) {
+  async handleAddDriver({ firstName, lastName, phone, distributionArea }) {
     adminService.addDriver(firstName, lastName, phone, distributionArea);
-    this.getDrivers();
+    // TODO: await this.getDrivers();
+    await this.getDrivers();
   }
   // The DIALOG - IN ADD SCENARIO
-  handleShowAddDriverDialog(e) {
-    this.setState({ showDriverDialog: true });
+  async handleShowAddDriverDialog(e) {
+    await this.setState({ showDriverDialog: true });
   }
 
   // The "DELETE" scenario
-  handleDeleteDriver(id, event) {
-    adminService.deleteDriver(id);
-    this.getDrivers();
+  //id, event
+  async handleDeleteDriver(id) {
+    await adminService.deleteDriver(id);
+    await this.getDrivers();
   }
 
+  // handleDeleteDriver(id, event) {
+  //   adminService.deleteDriver(id);
+  //   this.getDrivers();
+  // }
+
   // The "UPDATE" scenario
-  handleEditDriver({ id, firstName, lastName, phone, distributionArea }) {
-    adminService.editDriver(id, firstName, lastName, phone, distributionArea);
-    this.getDrivers();
+  async handleEditDriver({ id, firstName, lastName, phone, distributionArea }) {
+    await adminService.editDriver(
+      id,
+      firstName,
+      lastName,
+      phone,
+      distributionArea
+    );
+    await this.getDrivers();
   }
   // The  DIALOG - SHOW IN EDIT SCENARIO
-  handleShowEditDriverDialog(driver) {
-    this.setState({ showDriverDialog: true, driverForEdit: driver });
+  async handleShowEditDriverDialog(driver) {
+    await this.setState({ showDriverDialog: true, driverForEdit: driver });
   }
 
   // The  DIALOG - HANDLE CLOSE
-  handleCloseDriverDialog() {
-    this.setState({
+  async handleCloseDriverDialog() {
+    await this.setState({
       showDriverDialog: false,
       driverForEdit: null,
       firstName: null,
