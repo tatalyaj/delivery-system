@@ -10,7 +10,7 @@ export default class AdminAddressesPage extends React.Component {
     super(props);
     this.state = {
       // ADDRESSES
-      addresses: adminService.getAddresses(),
+      addresses: [],
       addressForEdit: null,
       showAddressDialog: false,
       city: null,
@@ -23,10 +23,15 @@ export default class AdminAddressesPage extends React.Component {
   }
 
   // For the "GET" scenario
-  getAddresses() {
+  async getAddresses() {
+    const addresses = await adminService.getAddresses();
     this.setState({
-      addresses: adminService.getAddresses(),
+      addresses: addresses,
     });
+  }
+
+  componentDidMount() {
+    this.getAddresses().then();
   }
 
   // For the "ADD" and "UPDATE" scenario - it chooses the func based on whether there's an ID meaning - it's the "UPDATE" scenario or else it's the "ADD" scenario
@@ -38,7 +43,7 @@ export default class AdminAddressesPage extends React.Component {
   };
 
   // The "ADD" scenario
-  handleAddAddress({
+  async handleAddAddress({
     city,
     address,
     deliveryType,
@@ -46,7 +51,7 @@ export default class AdminAddressesPage extends React.Component {
     recipientName,
     recipientPhone,
   }) {
-    adminService.addAddress(
+    await adminService.addAddress(
       city,
       address,
       deliveryType,
@@ -54,22 +59,22 @@ export default class AdminAddressesPage extends React.Component {
       recipientName,
       recipientPhone
     );
-    this.getAddresses();
+    await this.getAddresses();
   }
 
   // The DIALOG - IN ADD SCENARIO
-  handleShowAddDialog(e) {
-    this.setState({ showAddressDialog: true });
+  async handleShowAddDialog(e) {
+    await this.setState({ showAddressDialog: true });
   }
 
   // For the "DELETE" scenario
-  handleDelete(id, event) {
-    adminService.deleteAddress(id);
-    this.getAddresses();
+  async handleDelete(id, event) {
+    await adminService.deleteAddress(id);
+    await this.getAddresses();
   }
 
   // For the "UPDATE" scenario
-  handleEditAddress({
+  async handleEditAddress({
     id,
     city,
     address,
@@ -78,7 +83,7 @@ export default class AdminAddressesPage extends React.Component {
     recipientName,
     recipientPhone,
   }) {
-    adminService.editAddress(
+    await adminService.editAddress(
       id,
       city,
       address,
@@ -87,19 +92,19 @@ export default class AdminAddressesPage extends React.Component {
       recipientName,
       recipientPhone
     );
-    this.getAddresses();
+    await this.getAddresses();
   }
   // The  DIALOG - SHOW IN EDIT SCENARIO
-  handleShowEditDialog(address) {
-    this.setState({
+  async handleShowEditDialog(address) {
+    await this.setState({
       showAddressDialog: true,
       addressForEdit: address,
     });
   }
 
   // The  DIALOG - HANDLE CLOSE
-  handleClose() {
-    this.setState({
+  async handleClose() {
+    await this.setState({
       showAddressDialog: false,
       addressForEdit: null,
       city: null,

@@ -44,7 +44,7 @@ export default class AdminDriversPage extends React.Component {
 
   // The "ADD" scenario
   async handleAddDriver({ firstName, lastName, phone, distributionArea }) {
-    adminService.addDriver(firstName, lastName, phone, distributionArea);
+    await adminService.addDriver(firstName, lastName, phone, distributionArea);
     // TODO: await this.getDrivers();
     await this.getDrivers();
   }

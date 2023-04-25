@@ -1,9 +1,17 @@
 import { addresses } from "./mock-data";
 export default class AdminAddresses {
-  getAddresses() {
+  async getAddresses() {
+    let addresses;
+    try {
+      const res = await fetch("http://localhost:5000/addresses");
+      addresses = (await res.json()).addresses;
+    } catch (e) {
+      addresses = [];
+    }
     return addresses;
   }
-  addAddress(
+  // ADD
+  async addAddress(
     newCity,
     newAddress,
     newDeliveryType,
@@ -11,21 +19,31 @@ export default class AdminAddresses {
     newRecipientName,
     newRecipientPhone
   ) {
-    addresses.push({
-      id: addresses.length,
-      city: newCity,
-      address: newAddress,
-      deliveryType: newDeliveryType,
-      frequency: newFrequency,
-      recipientName: newRecipientName,
-      recipientPhone: newRecipientPhone,
-    });
+    let addresses;
+    try {
+      const res = await fetch(
+        `http://localhost:5000/postAddress/${newCity}/${newAddress}/${newDeliveryType}/${newFrequency}/${newRecipientName}/${newRecipientPhone} `
+      );
+      addresses = (await res.json()).addresses;
+    } catch (e) {
+      addresses = [];
+    }
+    return addresses;
   }
-  deleteAddress(id) {
-    const item = addresses.find((i) => i.id === id);
-    addresses.splice(addresses.indexOf(item), 1);
+
+  // DELETE
+  async deleteAddress(id) {
+    let addresses;
+    try {
+      const res = await fetch(`http://localhost:5000/deleteAddress/${id}`);
+      addresses = (await res.json()).addresses;
+    } catch (e) {
+      addresses = [];
+    }
+    return addresses;
   }
-  editAddress(
+  // EDIT
+  async editAddress(
     id,
     updatedCity,
     updatedAddress,
@@ -34,13 +52,15 @@ export default class AdminAddresses {
     updatedRecipientName,
     updatedRecipientPhone
   ) {
-    const item = addresses.find((i) => i?.id === id);
-    // DONE : on edit - replace the entire object
-    addresses[addresses.indexOf(item)].city = updatedCity;
-    addresses[addresses.indexOf(item)].address = updatedAddress;
-    addresses[addresses.indexOf(item)].deliveryType = updatedDeliveryType;
-    addresses[addresses.indexOf(item)].frequency = updatedFrequency;
-    addresses[addresses.indexOf(item)].recipientName = updatedRecipientName;
-    addresses[addresses.indexOf(item)].recipientPhone = updatedRecipientPhone;
+    let addresses;
+    try {
+      const res = await fetch(
+        `http://localhost:5000/putAddress/${id}/${updatedCity}/${updatedAddress}/${updatedDeliveryType}/${updatedFrequency}/${updatedRecipientName}/${updatedRecipientPhone} `
+      );
+      addresses = (await res.json()).addresses;
+    } catch (e) {
+      addresses = [];
+    }
+    return addresses;
   }
 }
