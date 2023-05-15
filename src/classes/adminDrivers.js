@@ -1,9 +1,15 @@
 // import { drivers } from "./mock-data";
+const BACKEND_HOST = "http://localhost:5000";
+
 export default class AdminDrivers {
+  // GET
   async getDrivers() {
     let drivers;
     try {
-      const res = await fetch("http://localhost:5000/drivers");
+      const res = await fetch(`${BACKEND_HOST}/drivers`, {
+        method: "GET", // *GET, POST, PUT, DELETE, etc.
+        body: JSON.stringify(), // body data type must match "Content-Type" header
+      });
       drivers = (await res.json()).drivers;
     } catch (e) {
       drivers = [];
@@ -11,44 +17,68 @@ export default class AdminDrivers {
 
     return drivers;
   }
-  // ADD
-  async addDriver(newFirstName, newLastName, newPhone, newDistributionArea) {
+
+  // ADD / POST
+  async addDriver(firstName, lastName, phone, distributionArea) {
+    // data/payload
+    const payload = {
+      first_name: firstName,
+      last_name: lastName,
+      phone: phone,
+      distribution_area: distributionArea,
+    };
     let drivers;
     try {
-      const res = await fetch(
-        `http://localhost:5000/postDriver/${newFirstName}/${newLastName}/${newPhone}/${newDistributionArea} `
-      );
+      const res = await fetch(`${BACKEND_HOST}/drivers`, {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload), // body data type must match "Content-Type" header
+      });
+
       drivers = (await res.json()).drivers;
     } catch (e) {
       drivers = [];
     }
     return drivers;
   }
+
+  // UPDATE / PUT
+  async editDriver(id, firstName, lastName, phone, distributionArea) {
+    const payload = {
+      id: id,
+      first_name: firstName,
+      last_name: lastName,
+      phone: phone,
+      distribution_area: distributionArea,
+    };
+    let drivers;
+    try {
+      const res = await fetch(`${BACKEND_HOST}/drivers/${id}`, {
+        method: "PUT", // *GET, POST, PUT, DELETE, etc.
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload), // body data type must match "Content-Type" header
+      });
+
+      drivers = (await res.json()).drivers;
+    } catch (e) {
+      drivers = [];
+    }
+    return drivers;
+  }
+
   //DELETE
   async deleteDriver(id) {
     let drivers;
     try {
-      const res = await fetch(`http://localhost:5000/deleteDriver/${id} `);
-      drivers = (await res.json()).drivers;
-    } catch (e) {
-      drivers = [];
-    }
-    return drivers;
-  }
+      const res = await fetch(`${BACKEND_HOST}/drivers/${id}`, {
+        method: "DELETE", // *GET, POST, PUT, DELETE, etc.
+        body: JSON.stringify(), // body data type must match "Content-Type" header
+      });
 
-  //EDIT
-  async editDriver(
-    id,
-    updatedFirstName,
-    updatedLastName,
-    updatedPhone,
-    updatedDistributionArea
-  ) {
-    let drivers;
-    try {
-      const res = await fetch(
-        `http://localhost:5000/putDriver/${id}/${updatedFirstName}/${updatedLastName}/${updatedPhone}/${updatedDistributionArea} `
-      );
       drivers = (await res.json()).drivers;
     } catch (e) {
       drivers = [];

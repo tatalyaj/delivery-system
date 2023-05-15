@@ -24,6 +24,7 @@ app.get("/drivers/:id", (req, res) => {
   if (driver) {
     res.json(driver);
   } else {
+    console.log(`in server get single`);
     res.sendStatus(404);
   }
 });
@@ -47,7 +48,7 @@ app.post("/drivers", (req, res) => {
 app.put("/drivers/:id", (req, res) => {
   // const driver = req.body.json()
   let drivers = mockData.drivers;
-  let data = req.body;
+  const data = req.body;
   const driver = drivers.find((item) => item.id === Number(data.id));
   drivers[drivers.indexOf(driver)].firstName = data.first_name;
   drivers[drivers.indexOf(driver)].lastName = data.last_name;
@@ -110,7 +111,15 @@ app.post("/addresses", (req, res) => {
 app.put("/addresses/:id", (req, res) => {
   let addresses = mockData.addresses;
   let data = req.body;
+  // console.log(req);
+  // console.log(req.body);
+  console.log(`Server updated data is: ${data}`);
+  console.log(data.city);
+  console.log(data.id);
   const address = addresses.find((item) => item.id === Number(data.id));
+  console.log(address);
+  console.log(addresses[addresses.indexOf(address)].city);
+  //console.log(address);
   addresses[addresses.indexOf(address)].city = data.city;
   addresses[addresses.indexOf(address)].address = data.address;
   addresses[addresses.indexOf(address)].deliveryType = data.delivery_type;
