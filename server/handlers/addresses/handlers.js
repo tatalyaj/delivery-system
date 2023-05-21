@@ -19,16 +19,20 @@ const handleGetAddressById = (req, res) => {
 const handlePostAddress = (req, res) => {
   let addresses = mockData.addresses;
   const data = req.body;
-  addresses.push({
-    id: addresses.length, //same bug as in drivers
-    city: data.city,
-    address: data.address,
-    deliveryType: data.delivery_type,
-    frequency: data.frequency,
-    recipientName: data.recipient_name,
-    recipientPhone: data.recipient_phone,
-  });
-  res.json(addresses);
+  if (isAddressValid(data)) {
+    addresses.push({
+      id: addresses.length, //same bug as in drivers
+      city: data.city,
+      address: data.address,
+      deliveryType: data.delivery_type,
+      frequency: data.frequency,
+      recipientName: data.recipient_name,
+      recipientPhone: data.recipient_phone,
+    });
+    res.json(addresses);
+  } else {
+    res.sendStatus(404);
+  }
 };
 // PUT - updating address handler
 const handlePutAddress = (req, res) => {
@@ -36,7 +40,7 @@ const handlePutAddress = (req, res) => {
   let data = req.body;
   const address = addresses.find((item) => item.id === Number(data.id));
 
-  if (address) {
+  if (address && isAddressValid(address)) {
     // address.city = data.city (should work because array.find returns an object by reference)
     addresses[addresses.indexOf(address)].city = data.city;
     addresses[addresses.indexOf(address)].address = data.address;
@@ -44,7 +48,6 @@ const handlePutAddress = (req, res) => {
     addresses[addresses.indexOf(address)].frequency = data.frequency;
     addresses[addresses.indexOf(address)].recipientName = data.recipient_name;
     addresses[addresses.indexOf(address)].recipientPhone = data.recipient_phone;
-
     res.json(addresses);
   } else {
     res.sendStatus(404);
@@ -56,8 +59,32 @@ const handleDeleteAddress = (req, res) => {
   const data = req.params;
   const addressToDelete = addresses.find((item) => item.id === Number(data.id));
   // validate that addressToDelete exists
-  addresses.splice(addresses.indexOf(addressToDelete), 1);
-  res.json(addresses);
+  if (addressToDelete) {
+    addresses.splice(addresses.indexOf(addressToDelete), 1);
+    res.json(addresses);
+  } else {
+    res.sendStatus(404);
+  }
+};
+// validation function can be used in post and put
+const isAddressValid = (address) => {
+  // return !(!address.city || !address.address || !address.delivery_type || !address.frequency || !address.recipient_name || !address.recipient_phone) === !!address.city && !!address.address...
+
+  if (!address.city) {
+    return false;
+  } else if (!address.address) {
+    return false;
+  } else if (!address.delivery_type) {
+    return false;
+  } else if (!address.frequency) {
+    return false;
+  } else if (!address.recipient_name) {
+    return false;
+  } else if (!address.recipient_phone || isNaN(address.recipient_phone)) {
+    return false;
+  }
+
+  return true;
 };
 
 module.exports = {
@@ -67,16 +94,3 @@ module.exports = {
   handlePutAddress,
   handleDeleteAddress,
 };
-
-// // validation function can be used in post and put
-// const isDriverValid = (driver) => {
-//   // return !(!driver.first_name || !driver.last_name || ...) === !!driver.first_name && !!driver.last_name...
-
-//   if (!driver.first_name) {
-//     return false;
-//   } else if (!driver.last_name) {
-//     return false;
-//   } // validate all fields
-
-//   return true;
-// };

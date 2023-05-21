@@ -36,8 +36,8 @@ export default class AdminDrivers {
         },
         body: JSON.stringify(payload), // body data type must match "Content-Type" header
       });
-
-      drivers = (await res.json()).drivers;
+      // drivers = (await res.json()).drivers;
+      drivers = await res.json();
     } catch (e) {
       drivers = [];
     }
@@ -62,8 +62,8 @@ export default class AdminDrivers {
         },
         body: JSON.stringify(payload), // body data type must match "Content-Type" header
       });
-
-      drivers = (await res.json()).drivers;
+      // drivers = (await res.json()).drivers;
+      drivers = await res.json();
     } catch (e) {
       drivers = [];
     }
@@ -78,8 +78,8 @@ export default class AdminDrivers {
         method: "DELETE", // *GET, POST, PUT, DELETE, etc.
         body: JSON.stringify(), // body data type must match "Content-Type" header
       });
-
-      drivers = (await res.json()).drivers;
+      // drivers = (await res.json()).drivers;
+      drivers = await res.json();
     } catch (e) {
       drivers = [];
     }

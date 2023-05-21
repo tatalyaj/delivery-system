@@ -45,7 +45,6 @@ export default class AdminDriversPage extends React.Component {
   // The "ADD" scenario
   async handleAddDriver({ firstName, lastName, phone, distributionArea }) {
     await adminService.addDriver(firstName, lastName, phone, distributionArea);
-    // TODO: await this.getDrivers();
     await this.getDrivers();
   }
   // The DIALOG - IN ADD SCENARIO
@@ -59,11 +58,6 @@ export default class AdminDriversPage extends React.Component {
     await adminService.deleteDriver(id);
     await this.getDrivers();
   }
-
-  // handleDeleteDriver(id, event) {
-  //   adminService.deleteDriver(id);
-  //   this.getDrivers();
-  // }
 
   // The "UPDATE" scenario
   async handleEditDriver({ id, firstName, lastName, phone, distributionArea }) {

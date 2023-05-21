@@ -18,17 +18,20 @@ const handleGetDriverById = (req, res) => {
 const handlePostDriver = (req, res) => {
   const drivers = mockData.drivers;
   const data = req.body;
-  console.log(`In server add-post new id: ${drivers.length}`);
   // validate that all data is present and valid (not empty, phone pattern (regex))
   // [1,2] -> array length = 2 - bug if we use array.length
-  drivers.push({
-    id: drivers.length, // check if ID already exists (UUID)
-    firstName: data.first_name,
-    lastName: data.last_name,
-    phone: data.phone,
-    distributionArea: data.distribution_area,
-  });
-  res.json(drivers);
+  if (isDriverValid(data)) {
+    drivers.push({
+      id: drivers.length, // check if ID already exists (UUID)
+      firstName: data.first_name,
+      lastName: data.last_name,
+      phone: data.phone,
+      distributionArea: data.distribution_area,
+    });
+    res.json(drivers);
+  } else {
+    res.sendStatus(404);
+  }
 };
 // PUT -  driver update handler
 const handlePutDriver = (req, res) => {
@@ -39,7 +42,7 @@ const handlePutDriver = (req, res) => {
   // validate that driver was indeed found (like in get)
   // driver.firstName = data.first_name;
 
-  if (driver) {
+  if (driver && isDriverValid(driver)) {
     drivers[drivers.indexOf(driver)].firstName = data.first_name;
     drivers[drivers.indexOf(driver)].lastName = data.last_name;
     drivers[drivers.indexOf(driver)].phone = data.phone;
@@ -55,9 +58,29 @@ const handleDeleteDriver = (req, res) => {
   const data = req.params;
   const driverToDelete = drivers.find((item) => item.id === Number(data.id));
   // validate that driverToDelete exists
+  if (driverToDelete) {
+    drivers.splice(drivers.indexOf(driverToDelete), 1);
+    res.json(drivers);
+  } else {
+    res.sendStatus(404);
+  }
+};
 
-  drivers.splice(drivers.indexOf(driverToDelete), 1);
-  res.json(drivers);
+// validation function can be used in post and put
+const isDriverValid = (driver) => {
+  // return !(!driver.first_name || !driver.last_name || ...) === !!driver.first_name && !!driver.last_name...
+
+  if (!driver.first_name) {
+    return false;
+  } else if (!driver.last_name) {
+    return false;
+  } else if (!driver.phone || isNaN(driver.phone)) {
+    return false;
+  } else if (!driver.distribution_area) {
+    return false;
+  }
+
+  return true;
 };
 
 module.exports = {
@@ -67,16 +90,3 @@ module.exports = {
   handlePutDriver,
   handleDeleteDriver,
 };
-
-// // validation function can be used in post and put
-// const isDriverValid = (driver) => {
-//   // return !(!driver.first_name || !driver.last_name || ...) === !!driver.first_name && !!driver.last_name...
-
-//   if (!driver.first_name) {
-//     return false;
-//   } else if (!driver.last_name) {
-//     return false;
-//   } // validate all fields
-
-//   return true;
-// };

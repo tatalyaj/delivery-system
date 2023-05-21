@@ -8,7 +8,6 @@ export default class DriverDialog extends React.Component {
   constructor(props) {
     super(props);
     this.props = props;
-    //console.log(props);
 
     this.state = {
       driverForEdit: this.props?.driverForEdit
@@ -29,7 +28,6 @@ export default class DriverDialog extends React.Component {
   }
   // HANDLE THE SAVE CHANGES BUTTON
   handleSaveDriver = (driver) => {
-    //console.log(typeof this.props.onDriverChanged);
     this.props.onDriverChanged(driver);
     this.handleClose();
   };
@@ -52,7 +50,6 @@ export default class DriverDialog extends React.Component {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {/* <p>{this.state.addressForEdit?.name}</p> */}
           <label>
             First Name:
             <input
