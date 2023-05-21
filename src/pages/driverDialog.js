@@ -2,6 +2,8 @@ import React from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
+// inputs should be validated - if not valid - show error
+
 export default class DriverDialog extends React.Component {
   constructor(props) {
     super(props);

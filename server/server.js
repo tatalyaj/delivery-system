@@ -4,6 +4,10 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 5000;
+
+const driverHandlers = require("./handlers/drivers/handlers");
+const addressHandlers = require("./handlers/addresses/handlers");
+
 // For parsing application/json
 app.use(express.json());
 
@@ -11,128 +15,36 @@ app.use(cors({ origin: "http://localhost:3000" }));
 // This displays message that the server running and listening to specified port
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
+// **** NEXT STEPS ****
+// 1. refactor code - extract 'drivers' and 'addresses' to seperated files (see example )
+// 2. validate all inputs before making changes to data
+
 // *****************DRIVERS********************
 // GET DRIVERS
-app.get("/drivers", (req, res) => {
-  res.json({ drivers: mockData.drivers });
-});
+app.get("/drivers", driverHandlers.handleGetDrivers);
 // Get a single driver based on id
-app.get("/drivers/:id", (req, res) => {
-  const driver = mockData.drivers.find(
-    (item) => item.id === Number(req.params.id)
-  );
-  if (driver) {
-    res.json(driver);
-  } else {
-    res.sendStatus(404);
-  }
-});
-
+app.get("/drivers/:id", driverHandlers.handleGetDriverById);
 // POST - Add new driver
-app.post("/drivers", (req, res) => {
-  let drivers = mockData.drivers;
-  const data = req.body;
-  console.log(`In server add-post new id: ${drivers.length}`);
-  drivers.push({
-    id: drivers.length,
-    firstName: data.first_name,
-    lastName: data.last_name,
-    phone: data.phone,
-    distributionArea: data.distribution_area,
-  });
-  res.json(drivers);
-});
-
+app.post("/drivers", driverHandlers.handlePostDriver);
 // PUT - update a driver
-app.put("/drivers/:id", (req, res) => {
-  // const driver = req.body.json()
-  let drivers = mockData.drivers;
-  let data = req.body;
-  const driver = drivers.find((item) => item.id === Number(data.id));
-  drivers[drivers.indexOf(driver)].firstName = data.first_name;
-  drivers[drivers.indexOf(driver)].lastName = data.last_name;
-  drivers[drivers.indexOf(driver)].phone = data.phone;
-  drivers[drivers.indexOf(driver)].distributionArea = data.distribution_area;
-
-  if (driver) {
-    res.json(drivers);
-  } else {
-    console.log(`in server get single`);
-    res.sendStatus(404);
-  }
-});
-
+app.put("/drivers/:id", driverHandlers.handlePutDriver);
 // DELETE DRIVER
-app.delete("/drivers/:id", (req, res) => {
-  let drivers = mockData.drivers;
-  const data = req.params;
-  const driverToDelete = drivers.find((item) => item.id === Number(data.id));
-
-  drivers.splice(drivers.indexOf(driverToDelete), 1);
-  res.json(drivers);
-});
+app.delete("/drivers/:id", driverHandlers.handleDeleteDriver);
 
 // ******************ADDRESSES*****************
 // GET ADDRESSES
-app.get("/addresses", (req, res) => {
-  res.json({ addresses: mockData.addresses });
-});
+app.get("/addresses", addressHandlers.handleGetAddresses);
 // Get a single address based on id
-app.get("/addresses/:id", (req, res) => {
-  const address = mockData.addresses.find(
-    (item) => item.id === Number(req.params.id)
-  );
-
-  if (address) {
-    res.json(address);
-  } else {
-    res.sendStatus(404);
-  }
-});
+app.get("/addresses/:id", addressHandlers.handleGetAddressById);
 
 // POST - ADD new address
-app.post("/addresses", (req, res) => {
-  let addresses = mockData.addresses;
-  const data = req.body;
-  addresses.push({
-    id: addresses.length,
-    city: data.city,
-    address: data.address,
-    deliveryType: data.delivery_type,
-    frequency: data.frequency,
-    recipientName: data.recipient_name,
-    recipientPhone: data.recipient_phone,
-  });
-  res.json(addresses);
-});
+app.post("/addresses", addressHandlers.handlePostAddress);
 
 // PUT -UPDATE an address
-app.put("/addresses/:id", (req, res) => {
-  let addresses = mockData.addresses;
-  let data = req.body;
-  const address = addresses.find((item) => item.id === Number(data.id));
-  addresses[addresses.indexOf(address)].city = data.city;
-  addresses[addresses.indexOf(address)].address = data.address;
-  addresses[addresses.indexOf(address)].deliveryType = data.delivery_type;
-  addresses[addresses.indexOf(address)].frequency = data.frequency;
-  addresses[addresses.indexOf(address)].recipientName = data.recipient_name;
-  addresses[addresses.indexOf(address)].recipientPhone = data.recipient_phone;
-
-  if (address) {
-    res.json(addresses);
-  } else {
-    res.sendStatus(404);
-  }
-});
+app.put("/addresses/:id", addressHandlers.handlePutAddress);
 
 // DELETE ADDRESS
-app.delete("/addresses/:id", (req, res) => {
-  let addresses = mockData.addresses;
-  const data = req.params;
-  const addressToDelete = addresses.find((item) => item.id === Number(data.id));
-  addresses.splice(addresses.indexOf(addressToDelete), 1);
-  res.json(addresses);
-});
+app.delete("/addresses/:id", addressHandlers.handleDeleteAddress);
 
 //****** Explainations******
 // ****** Number 1*******

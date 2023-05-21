@@ -9,6 +9,7 @@ export default class AdminAddressesPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      // errorMessage (from backend)
       // ADDRESSES
       addresses: [],
       addressForEdit: null,
@@ -51,14 +52,24 @@ export default class AdminAddressesPage extends React.Component {
     recipientName,
     recipientPhone,
   }) {
-    await adminService.addAddress(
-      city,
-      address,
-      deliveryType,
-      frequency,
-      recipientName,
-      recipientPhone
-    );
+    try {
+      // catch all errors, handle them in catch
+      await adminService.addAddress(
+        city,
+        address,
+        deliveryType,
+        frequency,
+        recipientName,
+        recipientPhone
+      );
+    } catch (e) {
+      // display error message
+      // this.setState({...this.state, errorMessage: "Invalid request"})
+      // first do validations in BE - try to add invalid data from UI and display error
+      // only after that - add validation in UI
+      return;
+    }
+
     await this.getAddresses();
   }
 
@@ -119,6 +130,8 @@ export default class AdminAddressesPage extends React.Component {
   render() {
     return (
       <div>
+        {this.state?.errorMessage ? <div>{this.state?.errorMessage}</div> : ""}
+
         <button
           className="add-button "
           onClick={(e) => this.handleShowAddDialog(e)}

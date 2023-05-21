@@ -46,9 +46,10 @@ export default class AdminAddresses {
         },
         body: JSON.stringify(payload), // body data type must match "Content-Type" header
       });
-      addresses = (await res.json()).addresses;
+      addresses = (await res.json()).addresses; // usually we don't receive the updated list on actions like add, edit , delete
     } catch (e) {
-      addresses = [];
+      addresses = []; // <--- this is a bug
+      // throw e
     }
     return addresses;
   }
