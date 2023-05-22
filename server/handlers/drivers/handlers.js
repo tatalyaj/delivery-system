@@ -1,4 +1,6 @@
 const mockData = require("./../../mock-data");
+const regex =
+  /^(?:(?:(\+?972|\(\+?972\)|\+?\(972\))(?:\s|\.|-)?([1-9]\d?))|(0[23489]{1})|(0[57]{1}[0-9]))(?:\s|\.|-)?([^0\D]{1}\d{2}(?:\s|\.|-)?\d{4})$/;
 // GET drivers handler
 const handleGetDrivers = (req, res) => {
   res.json({ drivers: mockData.drivers });
@@ -71,18 +73,18 @@ const handleDeleteDriver = (req, res) => {
 // validation function can be used in post and put
 const isDriverValid = (driver) => {
   // return !(!driver.first_name || !driver.last_name || ...) === !!driver.first_name && !!driver.last_name...
-  const phoneToNum = Number(driver.phone_num);
+
   if (typeof driver.id !== "number") {
     if (!driver.first_name) {
       return false;
     } else if (!driver.last_name) {
       return false;
-    } else if (!phoneToNum && isNaN(phoneToNum)) {
+    } else if (!driver.phone_num && !regex.test(driver.phone_num)) {
       return false;
     } else if (!driver.distribution_area) {
       return false;
     }
-  } else if (isNaN(phoneToNum)) {
+  } else if (!regex.test(driver.phone_num)) {
     return false;
   }
   console.log("Driver is valid");
@@ -96,3 +98,25 @@ module.exports = {
   handlePutDriver,
   handleDeleteDriver,
 };
+
+// FORMER VALIDATION FUNC
+// // validation function can be used in post and put
+// const isDriverValid = (driver) => {
+//   // return !(!driver.first_name || !driver.last_name || ...) === !!driver.first_name && !!driver.last_name...
+//   const phoneToNum = Number(driver.phone_num);
+//   if (typeof driver.id !== "number") {
+//     if (!driver.first_name) {
+//       return false;
+//     } else if (!driver.last_name) {
+//       return false;
+//     } else if (!phoneToNum && isNaN(phoneToNum)) {
+//       return false;
+//     } else if (!driver.distribution_area) {
+//       return false;
+//     }
+//   } else if (isNaN(phoneToNum)) {
+//     return false;
+//   }
+//   console.log("Driver is valid");
+//   return true;
+// };

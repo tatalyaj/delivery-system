@@ -1,4 +1,7 @@
 const mockData = require("./../../mock-data");
+const regex =
+  /^(?:(?:(\+?972|\(\+?972\)|\+?\(972\))(?:\s|\.|-)?([1-9]\d?))|(0[23489]{1})|(0[57]{1}[0-9]))(?:\s|\.|-)?([^0\D]{1}\d{2}(?:\s|\.|-)?\d{4})$/;
+
 // GET addresses handler
 const handleGetAddresses = (req, res) => {
   res.json({ addresses: mockData.addresses });
@@ -69,11 +72,11 @@ const handleDeleteAddress = (req, res) => {
     throw new Error();
   }
 };
+
 // validation function can be used in post and put
 const isAddressValid = (address) => {
-  // return !(!address.city || !address.address || !address.delivery_type || !address.frequency || !address.recipient_name || !address.recipient_phone) === !!address.city && !!address.address...
-  //const validRecipientPhone = Number(address.recipientPhone);
-  const recipientPhoneToNum = Number(address.recipient_phone);
+  // return !(!address.city || !address.address || ... === !!address.city && !!address.address...
+
   if (typeof address.id !== "number") {
     if (!address.city) {
       return false;
@@ -85,10 +88,13 @@ const isAddressValid = (address) => {
       return false;
     } else if (!address.recipient_name) {
       return false;
-    } else if (!recipientPhoneToNum && isNaN(recipientPhoneToNum)) {
+    } else if (
+      !address.recipient_phone &&
+      !regex.test(address.recipient_phone)
+    ) {
       return false;
     }
-  } else if (isNaN(recipientPhoneToNum)) {
+  } else if (!regex.test(address.recipient_phone)) {
     return false;
   }
   return true;
@@ -101,3 +107,28 @@ module.exports = {
   handlePutAddress,
   handleDeleteAddress,
 };
+
+// FORMER VALIDATION FUNC
+// // validation function can be used in post and put
+// const isAddressValid = (address) => {
+//   // return !(!address.city || !address.address || ... === !!address.city && !!address.address...
+//   const recipientPhoneToNum = Number(address.recipient_phone);
+//   if (typeof address.id !== "number") {
+//     if (!address.city) {
+//       return false;
+//     } else if (!address.address) {
+//       return false;
+//     } else if (!address.delivery_type) {
+//       return false;
+//     } else if (!address.frequency) {
+//       return false;
+//     } else if (!address.recipient_name) {
+//       return false;
+//     } else if (!recipientPhoneToNum && isNaN(recipientPhoneToNum)) {
+//       return false;
+//     }
+//   } else if (isNaN(recipientPhoneToNum)) {
+//     return false;
+//   }
+//   return true;
+// };
