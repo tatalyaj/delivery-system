@@ -79,7 +79,7 @@ const isDriverValid = (driver) => {
       return false;
     } else if (!driver.last_name) {
       return false;
-    } else if (!driver.phone_num && !regex.test(driver.phone_num)) {
+    } else if (!regex.test(driver.phone_num)) {
       return false;
     } else if (!driver.distribution_area) {
       return false;

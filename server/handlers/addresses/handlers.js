@@ -88,15 +88,15 @@ const isAddressValid = (address) => {
       return false;
     } else if (!address.recipient_name) {
       return false;
-    } else if (
-      !address.recipient_phone &&
-      !regex.test(address.recipient_phone)
-    ) {
+    } else if (!regex.test(address.recipient_phone)) {
+      console.log(`regex is: ${regex.test(address.recipient_phone)}`);
       return false;
     }
   } else if (!regex.test(address.recipient_phone)) {
     return false;
   }
+  console.log(`regex is: ${regex.test(address.recipient_phone)}`);
+  console.log(`!address.recipient_phone is: ${!address.recipient_phone}`);
   return true;
 };
 
