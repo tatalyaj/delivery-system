@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "react-bootstrap/Button";
 import AdminDrivers from "../classes/adminDrivers";
 import DriverDialog from "./driverDialog";
 import DriverTable from "./driverTable";
@@ -38,8 +39,6 @@ export default class AdminDriversPage extends React.Component {
     typeof driver.id === "number"
       ? this.handleEditDriver(driver)
       : this.handleAddDriver(driver);
-    //
-    console.log(driver);
   };
 
   // The "ADD" scenario
@@ -90,12 +89,13 @@ export default class AdminDriversPage extends React.Component {
   render() {
     return (
       <div>
-        <button
+        <Button
           className="add-button "
+          variant="outline-success"
           onClick={(e) => this.handleShowAddDriverDialog(e)}
         >
           Add
-        </button>
+        </Button>
         <DriverTable
           key={this.state.drivers.id}
           drivers={this.state.drivers}

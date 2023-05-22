@@ -40,7 +40,7 @@ const handlePutAddress = (req, res) => {
   let data = req.body;
   const address = addresses.find((item) => item.id === Number(data.id));
 
-  if (address && isAddressValid(address)) {
+  if (address && isAddressValid(data)) {
     // address.city = data.city (should work because array.find returns an object by reference)
     addresses[addresses.indexOf(address)].city = data.city;
     addresses[addresses.indexOf(address)].address = data.address;
@@ -50,6 +50,7 @@ const handlePutAddress = (req, res) => {
     addresses[addresses.indexOf(address)].recipientPhone = data.recipient_phone;
     res.json(addresses);
   } else {
+    console.log("handlePutAddress is invalid ");
     res.sendStatus(404);
   }
 };
@@ -69,21 +70,25 @@ const handleDeleteAddress = (req, res) => {
 // validation function can be used in post and put
 const isAddressValid = (address) => {
   // return !(!address.city || !address.address || !address.delivery_type || !address.frequency || !address.recipient_name || !address.recipient_phone) === !!address.city && !!address.address...
-
-  if (!address.city) {
-    return false;
-  } else if (!address.address) {
-    return false;
-  } else if (!address.delivery_type) {
-    return false;
-  } else if (!address.frequency) {
-    return false;
-  } else if (!address.recipient_name) {
-    return false;
-  } else if (!address.recipient_phone || isNaN(address.recipient_phone)) {
+  //const validRecipientPhone = Number(address.recipientPhone);
+  const recipientPhoneToNum = parseInt(address.recipient_phone, 10);
+  if (typeof address.id !== "number") {
+    if (!address.city) {
+      return false;
+    } else if (!address.address) {
+      return false;
+    } else if (!address.delivery_type) {
+      return false;
+    } else if (!address.frequency) {
+      return false;
+    } else if (!address.recipient_name) {
+      return false;
+    } else if (!recipientPhoneToNum && isNaN(recipientPhoneToNum)) {
+      return false;
+    }
+  } else if (isNaN(recipientPhoneToNum)) {
     return false;
   }
-
   return true;
 };
 

@@ -24,7 +24,7 @@ export default class AdminDrivers {
     const payload = {
       first_name: firstName,
       last_name: lastName,
-      phone: phone,
+      phone_num: phone,
       distribution_area: distributionArea,
     };
     let drivers;
@@ -50,7 +50,7 @@ export default class AdminDrivers {
       id: id,
       first_name: firstName,
       last_name: lastName,
-      phone: phone,
+      phone_num: phone,
       distribution_area: distributionArea,
     };
     let drivers;
@@ -62,10 +62,10 @@ export default class AdminDrivers {
         },
         body: JSON.stringify(payload), // body data type must match "Content-Type" header
       });
-      // drivers = (await res.json()).drivers;
+      //drivers = (await res.json()).drivers;
       drivers = await res.json();
     } catch (e) {
-      drivers = [];
+      //drivers = [];
     }
     return drivers;
   }

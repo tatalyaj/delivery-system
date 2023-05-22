@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "react-bootstrap/Button";
 import AdminAddresses from "../classes/adminAddresses";
 import AddressDialog from "./addressDialog";
 import AddressTable from "./addressTable";
@@ -9,7 +10,7 @@ export default class AdminAddressesPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // errorMessage (from backend)
+      // errorMessage // (from backend)
       // ADDRESSES
       addresses: [],
       addressForEdit: null,
@@ -132,12 +133,13 @@ export default class AdminAddressesPage extends React.Component {
       <div>
         {this.state?.errorMessage ? <div>{this.state?.errorMessage}</div> : ""}
 
-        <button
+        <Button
           className="add-button "
+          variant="outline-success"
           onClick={(e) => this.handleShowAddDialog(e)}
         >
           Add
-        </button>
+        </Button>
         <AddressTable
           key={this.state.addresses.id}
           addresses={this.state.addresses}

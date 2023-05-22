@@ -88,7 +88,7 @@ export default class AdminAddresses {
       //addresses = (await res.json()).addresses;
       addresses = await res.json();
     } catch (e) {
-      addresses = [];
+      // addresses = [];
     }
     return addresses;
   }

@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "react-bootstrap/Button";
 
 export default class DriverTable extends React.Component {
   constructor(props) {
@@ -40,15 +41,19 @@ export default class DriverTable extends React.Component {
               <td>{item?.phone}</td>
               <td>{item?.distributionArea}</td>
               <td>
-                <button
+                <Button
                   className="edit-buttons"
+                  variant="outline-dark"
                   onClick={(e) => this.handleEditClick(item, e)}
                 >
                   Edit
-                </button>
-                <button onClick={(e) => this.handleDeleteClick(item.id, e)}>
+                </Button>
+                <Button
+                  variant="outline-danger"
+                  onClick={(e) => this.handleDeleteClick(item.id, e)}
+                >
                   Delete
-                </button>
+                </Button>
               </td>
               <td></td>
             </tr>

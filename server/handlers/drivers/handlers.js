@@ -25,7 +25,7 @@ const handlePostDriver = (req, res) => {
       id: drivers.length, // check if ID already exists (UUID)
       firstName: data.first_name,
       lastName: data.last_name,
-      phone: data.phone,
+      phone: data.phone_num,
       distributionArea: data.distribution_area,
     });
     res.json(drivers);
@@ -41,14 +41,14 @@ const handlePutDriver = (req, res) => {
   const driver = drivers.find((item) => item.id === Number(data.id)); // returns an object by reference
   // validate that driver was indeed found (like in get)
   // driver.firstName = data.first_name;
-
-  if (driver && isDriverValid(driver)) {
+  if (driver && isDriverValid(data)) {
     drivers[drivers.indexOf(driver)].firstName = data.first_name;
     drivers[drivers.indexOf(driver)].lastName = data.last_name;
-    drivers[drivers.indexOf(driver)].phone = data.phone;
+    drivers[drivers.indexOf(driver)].phone = data.phone_num;
     drivers[drivers.indexOf(driver)].distributionArea = data.distribution_area;
     res.json(drivers);
   } else {
+    console.log("handlePutDriver is invalid ");
     res.sendStatus(404);
   }
 };
@@ -69,17 +69,21 @@ const handleDeleteDriver = (req, res) => {
 // validation function can be used in post and put
 const isDriverValid = (driver) => {
   // return !(!driver.first_name || !driver.last_name || ...) === !!driver.first_name && !!driver.last_name...
-
-  if (!driver.first_name) {
-    return false;
-  } else if (!driver.last_name) {
-    return false;
-  } else if (!driver.phone || isNaN(driver.phone)) {
-    return false;
-  } else if (!driver.distribution_area) {
+  const phoneToNum = parseInt(driver.phone_num, 10);
+  if (typeof driver.id !== "number") {
+    if (!driver.first_name) {
+      return false;
+    } else if (!driver.last_name) {
+      return false;
+    } else if (!phoneToNum && isNaN(phoneToNum)) {
+      return false;
+    } else if (!driver.distribution_area) {
+      return false;
+    }
+  } else if (isNaN(phoneToNum)) {
     return false;
   }
-
+  console.log("Driver is valid");
   return true;
 };
 

@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "react-bootstrap/Button";
 
 export default class AddressTable extends React.Component {
   constructor(props) {
@@ -53,15 +54,19 @@ export default class AddressTable extends React.Component {
               <td>{item?.recipientPhone}</td>
               <td>{`-----`}</td>
               <td>
-                <button
+                <Button
                   className="edit-buttons"
+                  variant="outline-dark"
                   onClick={() => this.handleEditClick(item)}
                 >
                   Edit
-                </button>
-                <button onClick={(e) => this.handleDeleteClick(item.id, e)}>
+                </Button>
+                <Button
+                  variant="outline-danger"
+                  onClick={(e) => this.handleDeleteClick(item.id, e)}
+                >
                   Delete
-                </button>
+                </Button>
               </td>
               <td></td>
             </tr>
