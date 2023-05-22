@@ -27,7 +27,7 @@ export default class AdminDrivers {
       phone_num: phone,
       distribution_area: distributionArea,
     };
-    let drivers;
+    let response;
     try {
       const res = await fetch(`${BACKEND_HOST}/drivers`, {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
@@ -36,12 +36,12 @@ export default class AdminDrivers {
         },
         body: JSON.stringify(payload), // body data type must match "Content-Type" header
       });
-      // drivers = (await res.json()).drivers;
-      drivers = await res.json();
+
+      response = await res.json();
     } catch (e) {
-      drivers = [];
+      throw e;
     }
-    return drivers;
+    return response;
   }
 
   // UPDATE / PUT
@@ -53,7 +53,7 @@ export default class AdminDrivers {
       phone_num: phone,
       distribution_area: distributionArea,
     };
-    let drivers;
+    let response;
     try {
       const res = await fetch(`${BACKEND_HOST}/drivers/${id}`, {
         method: "PUT", // *GET, POST, PUT, DELETE, etc.
@@ -62,27 +62,26 @@ export default class AdminDrivers {
         },
         body: JSON.stringify(payload), // body data type must match "Content-Type" header
       });
-      //drivers = (await res.json()).drivers;
-      drivers = await res.json();
+
+      response = await res.json();
     } catch (e) {
-      //drivers = [];
+      throw e;
     }
-    return drivers;
+    return response;
   }
 
   //DELETE
   async deleteDriver(id) {
-    let drivers;
+    let response;
     try {
       const res = await fetch(`${BACKEND_HOST}/drivers/${id}`, {
         method: "DELETE", // *GET, POST, PUT, DELETE, etc.
         body: JSON.stringify(), // body data type must match "Content-Type" header
       });
-      // drivers = (await res.json()).drivers;
-      drivers = await res.json();
+      response = await res.json();
     } catch (e) {
-      drivers = [];
+      throw e;
     }
-    return drivers;
+    return response;
   }
 }

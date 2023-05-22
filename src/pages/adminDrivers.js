@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
+import Alert from "react-bootstrap/Alert";
 import AdminDrivers from "../classes/adminDrivers";
 import DriverDialog from "./driverDialog";
 import DriverTable from "./driverTable";
@@ -10,6 +11,7 @@ export default class AdminDriversPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      errorMessage: null, // (from backend)
       drivers: [],
       driverForEdit: null,
       showDriverDialog: false,
@@ -43,7 +45,18 @@ export default class AdminDriversPage extends React.Component {
 
   // The "ADD" scenario
   async handleAddDriver({ firstName, lastName, phone, distributionArea }) {
-    await adminService.addDriver(firstName, lastName, phone, distributionArea);
+    try {
+      await adminService.addDriver(
+        firstName,
+        lastName,
+        phone,
+        distributionArea
+      );
+    } catch (e) {
+      this.setState({ ...this.state, errorMessage: "Invalid Add Request" });
+      return;
+    }
+
     await this.getDrivers();
   }
   // The DIALOG - IN ADD SCENARIO
@@ -51,22 +64,20 @@ export default class AdminDriversPage extends React.Component {
     await this.setState({ showDriverDialog: true });
   }
 
-  // The "DELETE" scenario
-  //id, event
-  async handleDeleteDriver(id) {
-    await adminService.deleteDriver(id);
-    await this.getDrivers();
-  }
-
   // The "UPDATE" scenario
   async handleEditDriver({ id, firstName, lastName, phone, distributionArea }) {
-    await adminService.editDriver(
-      id,
-      firstName,
-      lastName,
-      phone,
-      distributionArea
-    );
+    try {
+      await adminService.editDriver(
+        id,
+        firstName,
+        lastName,
+        phone,
+        distributionArea
+      );
+    } catch (e) {
+      this.setState({ ...this.state, errorMessage: "Invalid Update Request" });
+      return;
+    }
     await this.getDrivers();
   }
   // The  DIALOG - SHOW IN EDIT SCENARIO
@@ -86,9 +97,27 @@ export default class AdminDriversPage extends React.Component {
     });
   }
 
+  // The "DELETE" scenario
+  //id, event
+  async handleDeleteDriver(id) {
+    try {
+      await adminService.deleteDriver(id);
+    } catch (e) {
+      this.setState({ ...this.state, errorMessage: "User Not Found!" });
+      return;
+    }
+
+    await this.getDrivers();
+  }
+
   render() {
     return (
       <div>
+        {this.state?.errorMessage ? (
+          <Alert variant={"danger"}>{this.state?.errorMessage}</Alert>
+        ) : (
+          ""
+        )}
         <Button
           className="add-button "
           variant="outline-success"

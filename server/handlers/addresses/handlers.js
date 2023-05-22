@@ -32,6 +32,7 @@ const handlePostAddress = (req, res) => {
     res.json(addresses);
   } else {
     res.sendStatus(404);
+    throw new Error();
   }
 };
 // PUT - updating address handler
@@ -50,8 +51,8 @@ const handlePutAddress = (req, res) => {
     addresses[addresses.indexOf(address)].recipientPhone = data.recipient_phone;
     res.json(addresses);
   } else {
-    console.log("handlePutAddress is invalid ");
     res.sendStatus(404);
+    throw new Error();
   }
 };
 // DELETE address handler
@@ -65,13 +66,14 @@ const handleDeleteAddress = (req, res) => {
     res.json(addresses);
   } else {
     res.sendStatus(404);
+    throw new Error();
   }
 };
 // validation function can be used in post and put
 const isAddressValid = (address) => {
   // return !(!address.city || !address.address || !address.delivery_type || !address.frequency || !address.recipient_name || !address.recipient_phone) === !!address.city && !!address.address...
   //const validRecipientPhone = Number(address.recipientPhone);
-  const recipientPhoneToNum = parseInt(address.recipient_phone, 10);
+  const recipientPhoneToNum = Number(address.recipient_phone);
   if (typeof address.id !== "number") {
     if (!address.city) {
       return false;

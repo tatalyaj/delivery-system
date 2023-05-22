@@ -31,6 +31,7 @@ const handlePostDriver = (req, res) => {
     res.json(drivers);
   } else {
     res.sendStatus(404);
+    throw new Error();
   }
 };
 // PUT -  driver update handler
@@ -48,8 +49,8 @@ const handlePutDriver = (req, res) => {
     drivers[drivers.indexOf(driver)].distributionArea = data.distribution_area;
     res.json(drivers);
   } else {
-    console.log("handlePutDriver is invalid ");
     res.sendStatus(404);
+    throw new Error();
   }
 };
 // DELETE - delete driver handler - usually, we don't respond with the changed data - the UI should call GET DRIVERS after a successful deletion / edition
@@ -63,13 +64,14 @@ const handleDeleteDriver = (req, res) => {
     res.json(drivers);
   } else {
     res.sendStatus(404);
+    throw new Error();
   }
 };
 
 // validation function can be used in post and put
 const isDriverValid = (driver) => {
   // return !(!driver.first_name || !driver.last_name || ...) === !!driver.first_name && !!driver.last_name...
-  const phoneToNum = parseInt(driver.phone_num, 10);
+  const phoneToNum = Number(driver.phone_num);
   if (typeof driver.id !== "number") {
     if (!driver.first_name) {
       return false;

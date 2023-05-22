@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
+import Alert from "react-bootstrap/Alert";
 import AdminAddresses from "../classes/adminAddresses";
 import AddressDialog from "./addressDialog";
 import AddressTable from "./addressTable";
@@ -10,7 +11,7 @@ export default class AdminAddressesPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // errorMessage // (from backend)
+      errorMessage: null, // (from backend)
       // ADDRESSES
       addresses: [],
       addressForEdit: null,
@@ -41,7 +42,6 @@ export default class AdminAddressesPage extends React.Component {
     typeof address.id === "number"
       ? this.handleEditAddress(address)
       : this.handleAddAddress(address);
-    //console.log(address);
   };
 
   // The "ADD" scenario
@@ -65,7 +65,7 @@ export default class AdminAddressesPage extends React.Component {
       );
     } catch (e) {
       // display error message
-      // this.setState({...this.state, errorMessage: "Invalid request"})
+      this.setState({ ...this.state, errorMessage: "Invalid Add Request" });
       // first do validations in BE - try to add invalid data from UI and display error
       // only after that - add validation in UI
       return;
@@ -79,12 +79,6 @@ export default class AdminAddressesPage extends React.Component {
     await this.setState({ showAddressDialog: true });
   }
 
-  // For the "DELETE" scenario
-  async handleDelete(id, event) {
-    await adminService.deleteAddress(id);
-    await this.getAddresses();
-  }
-
   // For the "UPDATE" scenario
   async handleEditAddress({
     id,
@@ -95,15 +89,21 @@ export default class AdminAddressesPage extends React.Component {
     recipientName,
     recipientPhone,
   }) {
-    await adminService.editAddress(
-      id,
-      city,
-      address,
-      deliveryType,
-      frequency,
-      recipientName,
-      recipientPhone
-    );
+    try {
+      await adminService.editAddress(
+        id,
+        city,
+        address,
+        deliveryType,
+        frequency,
+        recipientName,
+        recipientPhone
+      );
+    } catch (e) {
+      this.setState({ ...this.state, errorMessage: "Invalid Update Request" });
+      return;
+    }
+
     await this.getAddresses();
   }
   // The  DIALOG - SHOW IN EDIT SCENARIO
@@ -128,10 +128,26 @@ export default class AdminAddressesPage extends React.Component {
     });
   }
 
+  // For the "DELETE" scenario
+  async handleDelete(id, event) {
+    try {
+      await adminService.deleteAddress(id);
+    } catch (e) {
+      this.setState({ ...this.state, errorMessage: "User Not Found!" });
+      return;
+    }
+
+    await this.getAddresses();
+  }
+
   render() {
     return (
       <div>
-        {this.state?.errorMessage ? <div>{this.state?.errorMessage}</div> : ""}
+        {this.state?.errorMessage ? (
+          <Alert variant={"danger"}>{this.state?.errorMessage}</Alert>
+        ) : (
+          ""
+        )}
 
         <Button
           className="add-button "

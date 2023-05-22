@@ -37,7 +37,8 @@ export default class AdminAddresses {
       recipient_name: recipientName,
       recipient_phone: recipientPhone,
     };
-    let addresses;
+
+    let response;
     try {
       const res = await fetch(`${BACKEND_HOST}/addresses`, {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
@@ -46,13 +47,13 @@ export default class AdminAddresses {
         },
         body: JSON.stringify(payload), // body data type must match "Content-Type" header
       });
-      // BEFORE - addresses = (await res.json()).addresses;
-      addresses = await res.json(); // usually we don't receive the updated list on actions like add, edit , delete
+
+      response = await res.json(); // usually we don't receive the updated list on actions like add, edit , delete
     } catch (e) {
-      addresses = []; // <--- this is a bug
-      // throw e
+      throw e;
     }
-    return addresses;
+
+    return response;
   }
 
   // PUT / UPDATE
@@ -75,8 +76,8 @@ export default class AdminAddresses {
       recipient_name: recipientName,
       recipient_phone: recipientPhone,
     };
-    console.log(payload);
-    let addresses;
+    //console.log(payload);
+    let response;
     try {
       const res = await fetch(`${BACKEND_HOST}/addresses/${id}`, {
         method: "PUT", // *GET, POST, PUT, DELETE, etc.
@@ -85,27 +86,27 @@ export default class AdminAddresses {
         },
         body: JSON.stringify(payload), // body data type must match "Content-Type" header
       });
-      //addresses = (await res.json()).addresses;
-      addresses = await res.json();
+
+      response = await res.json();
     } catch (e) {
-      // addresses = [];
+      throw e;
     }
-    return addresses;
+    return response;
   }
 
   // DELETE
   async deleteAddress(id) {
-    let addresses;
+    let response;
     try {
       const res = await fetch(`${BACKEND_HOST}/addresses/${id}`, {
         method: "DELETE", // *GET, POST, PUT, DELETE, etc.
         body: JSON.stringify(), // body data type must match "Content-Type" header
       });
-      //addresses = (await res.json()).addresses;
-      addresses = await res.json();
+
+      response = await res.json();
     } catch (e) {
-      addresses = [];
+      throw e;
     }
-    return addresses;
+    return response;
   }
 }
