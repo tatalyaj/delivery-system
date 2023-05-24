@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
+import Table from "react-bootstrap/Table";
 
 export default class AddressTable extends React.Component {
   constructor(props) {
@@ -8,13 +9,6 @@ export default class AddressTable extends React.Component {
 
     this.state = {
       addresses: this.props.addresses,
-
-      //   city: null,
-      //   address: null,
-      //   deliveryType: null,
-      //   frequency: null,
-      //   recipientName: null,
-      //   recipientPhone: null,
     };
   }
 
@@ -27,7 +21,7 @@ export default class AddressTable extends React.Component {
   };
   render() {
     return (
-      <table className="addresses-table">
+      <Table className="addresses-table">
         <thead>
           <tr>
             <th scope="col">#</th>
@@ -38,8 +32,8 @@ export default class AddressTable extends React.Component {
             <th scope="col"> Recipient Name </th>
             <th scope="col"> Recipient Phone </th>
             <th scope="col"> Assigned To: </th>
-            <th scope="col"> edit </th>
-            <th scope="col"> delete </th>
+            <th scope="col"> Edit </th>
+            <th scope="col"> Delete </th>
           </tr>
         </thead>
         <tbody>
@@ -61,6 +55,8 @@ export default class AddressTable extends React.Component {
                 >
                   Edit
                 </Button>
+              </td>
+              <td>
                 <Button
                   variant="outline-danger"
                   onClick={(e) => this.handleDeleteClick(item.id, e)}
@@ -72,7 +68,7 @@ export default class AddressTable extends React.Component {
             </tr>
           ))}
         </tbody>
-      </table>
+      </Table>
     );
   }
 }

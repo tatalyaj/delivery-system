@@ -19,6 +19,7 @@ export default class AdminDriversPage extends React.Component {
       lastName: null,
       phone: null,
       distributionArea: null,
+      showAlert: false,
     };
   }
 
@@ -53,10 +54,17 @@ export default class AdminDriversPage extends React.Component {
         distributionArea
       );
     } catch (e) {
-      this.setState({ ...this.state, errorMessage: "Invalid Add Request" });
+      this.setState({
+        ...this.state,
+        errorMessage: "Invalid Add Request",
+        showAlert: true,
+      });
       return;
     }
-
+    this.setState({
+      ...this.state,
+      showAlert: false,
+    });
     await this.getDrivers();
   }
   // The DIALOG - IN ADD SCENARIO
@@ -75,9 +83,17 @@ export default class AdminDriversPage extends React.Component {
         distributionArea
       );
     } catch (e) {
-      this.setState({ ...this.state, errorMessage: "Invalid Update Request" });
+      this.setState({
+        ...this.state,
+        errorMessage: "Invalid Update Request",
+        showAlert: true,
+      });
       return;
     }
+    this.setState({
+      ...this.state,
+      showAlert: false,
+    });
     await this.getDrivers();
   }
   // The  DIALOG - SHOW IN EDIT SCENARIO
@@ -103,10 +119,17 @@ export default class AdminDriversPage extends React.Component {
     try {
       await adminService.deleteDriver(id);
     } catch (e) {
-      this.setState({ ...this.state, errorMessage: "User Not Found!" });
+      this.setState({
+        ...this.state,
+        errorMessage: "User Not Found!",
+        showAlert: true,
+      });
       return;
     }
-
+    this.setState({
+      ...this.state,
+      showAlert: false,
+    });
     await this.getDrivers();
   }
 
@@ -114,7 +137,9 @@ export default class AdminDriversPage extends React.Component {
     return (
       <div>
         {this.state?.errorMessage ? (
-          <Alert variant={"danger"}>{this.state?.errorMessage}</Alert>
+          <Alert variant={"danger"} show={this.state.showAlert}>
+            {this.state?.errorMessage}
+          </Alert>
         ) : (
           ""
         )}

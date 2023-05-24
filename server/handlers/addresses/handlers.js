@@ -1,6 +1,7 @@
 const mockData = require("./../../mock-data");
-const regex =
+const validPhoneRegex =
   /^(?:(?:(\+?972|\(\+?972\)|\+?\(972\))(?:\s|\.|-)?([1-9]\d?))|(0[23489]{1})|(0[57]{1}[0-9]))(?:\s|\.|-)?([^0\D]{1}\d{2}(?:\s|\.|-)?\d{4})$/;
+const validNameRegex = /^[a-zA-Z ]{2,40}$/;
 
 // GET addresses handler
 const handleGetAddresses = (req, res) => {
@@ -76,27 +77,21 @@ const handleDeleteAddress = (req, res) => {
 // validation function can be used in post and put
 const isAddressValid = (address) => {
   // return !(!address.city || !address.address || ... === !!address.city && !!address.address...
-
-  if (typeof address.id !== "number") {
-    if (!address.city) {
-      return false;
-    } else if (!address.address) {
-      return false;
-    } else if (!address.delivery_type) {
-      return false;
-    } else if (!address.frequency) {
-      return false;
-    } else if (!address.recipient_name) {
-      return false;
-    } else if (!regex.test(address.recipient_phone)) {
-      console.log(`regex is: ${regex.test(address.recipient_phone)}`);
-      return false;
-    }
-  } else if (!regex.test(address.recipient_phone)) {
+  if (!address.city) {
+    return false;
+  } else if (!address.address) {
+    return false;
+  } else if (!address.delivery_type) {
+    return false;
+  } else if (!address.frequency) {
+    return false;
+  } else if (!validNameRegex.test(address.recipient_name)) {
+    return false;
+  } else if (!validPhoneRegex.test(address.recipient_phone)) {
     return false;
   }
-  console.log(`regex is: ${regex.test(address.recipient_phone)}`);
-  console.log(`!address.recipient_phone is: ${!address.recipient_phone}`);
+
+  console.log("Address is valid");
   return true;
 };
 

@@ -22,6 +22,7 @@ export default class AdminAddressesPage extends React.Component {
       frequency: null,
       recipientName: null,
       recipientPhone: null,
+      showAlert: false,
     };
   }
 
@@ -65,12 +66,19 @@ export default class AdminAddressesPage extends React.Component {
       );
     } catch (e) {
       // display error message
-      this.setState({ ...this.state, errorMessage: "Invalid Add Request" });
+      this.setState({
+        ...this.state,
+        errorMessage: "Invalid Add Request",
+        showAlert: true,
+      });
       // first do validations in BE - try to add invalid data from UI and display error
       // only after that - add validation in UI
       return;
     }
-
+    this.setState({
+      ...this.state,
+      showAlert: false,
+    });
     await this.getAddresses();
   }
 
@@ -100,10 +108,17 @@ export default class AdminAddressesPage extends React.Component {
         recipientPhone
       );
     } catch (e) {
-      this.setState({ ...this.state, errorMessage: "Invalid Update Request" });
+      this.setState({
+        ...this.state,
+        errorMessage: "Invalid Update Request",
+        showAlert: true,
+      });
       return;
     }
-
+    this.setState({
+      ...this.state,
+      showAlert: false,
+    });
     await this.getAddresses();
   }
   // The  DIALOG - SHOW IN EDIT SCENARIO
@@ -133,10 +148,17 @@ export default class AdminAddressesPage extends React.Component {
     try {
       await adminService.deleteAddress(id);
     } catch (e) {
-      this.setState({ ...this.state, errorMessage: "User Not Found!" });
+      this.setState({
+        ...this.state,
+        errorMessage: "User Not Found!",
+        showAlert: true,
+      });
       return;
     }
-
+    this.setState({
+      ...this.state,
+      showAlert: false,
+    });
     await this.getAddresses();
   }
 
@@ -144,7 +166,9 @@ export default class AdminAddressesPage extends React.Component {
     return (
       <div>
         {this.state?.errorMessage ? (
-          <Alert variant={"danger"}>{this.state?.errorMessage}</Alert>
+          <Alert variant={"danger"} show={this.state.showAlert}>
+            {this.state?.errorMessage}
+          </Alert>
         ) : (
           ""
         )}

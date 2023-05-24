@@ -1,6 +1,8 @@
 const mockData = require("./../../mock-data");
-const regex =
+const validPhoneRegex =
   /^(?:(?:(\+?972|\(\+?972\)|\+?\(972\))(?:\s|\.|-)?([1-9]\d?))|(0[23489]{1})|(0[57]{1}[0-9]))(?:\s|\.|-)?([^0\D]{1}\d{2}(?:\s|\.|-)?\d{4})$/;
+const validNameRegex = /^[a-zA-Z ]{2,40}$/;
+
 // GET drivers handler
 const handleGetDrivers = (req, res) => {
   res.json({ drivers: mockData.drivers });
@@ -73,18 +75,13 @@ const handleDeleteDriver = (req, res) => {
 // validation function can be used in post and put
 const isDriverValid = (driver) => {
   // return !(!driver.first_name || !driver.last_name || ...) === !!driver.first_name && !!driver.last_name...
-
-  if (typeof driver.id !== "number") {
-    if (!driver.first_name) {
-      return false;
-    } else if (!driver.last_name) {
-      return false;
-    } else if (!regex.test(driver.phone_num)) {
-      return false;
-    } else if (!driver.distribution_area) {
-      return false;
-    }
-  } else if (!regex.test(driver.phone_num)) {
+  if (!validNameRegex.test(driver.first_name)) {
+    return false;
+  } else if (!validNameRegex.test(driver.last_name)) {
+    return false;
+  } else if (!validPhoneRegex.test(driver.phone_num)) {
+    return false;
+  } else if (!driver.distribution_area) {
     return false;
   }
   console.log("Driver is valid");
