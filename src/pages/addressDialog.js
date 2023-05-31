@@ -28,6 +28,16 @@ export default class AddressDialog extends React.Component {
   }
   // HANDLE CLOSE DIALOG
   handleClose() {
+    this.setState({
+      showAddressDialog: false,
+      addressForEdit: null,
+      city: null,
+      address: null,
+      deliveryType: null,
+      frequency: null,
+      recipientName: null,
+      recipientPhone: null,
+    });
     this.props.onDialogClose();
   }
   // HANDLE THE SAVE CHANGES BUTTON

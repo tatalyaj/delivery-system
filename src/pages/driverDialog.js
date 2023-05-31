@@ -25,6 +25,14 @@ export default class DriverDialog extends React.Component {
   }
   // HANDLE CLOSE DIALOG
   handleClose() {
+    this.setState({
+      showDriverDialog: false,
+      driverForEdit: null,
+      firstName: null,
+      lastName: null,
+      phone: null,
+      distributionArea: null,
+    });
     this.props.onDialogClose();
   }
   // HANDLE THE SAVE CHANGES BUTTON
