@@ -1,4 +1,5 @@
 import React from "react";
+import { Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
@@ -55,7 +56,21 @@ export default class AddressDialog extends React.Component {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <label>
+          <Form>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>City</Form.Label>
+              <Form.Control
+                type="text"
+                name="city"
+                defaultValue={this.state.addressForEdit?.city}
+                onChange={this.handleChange}
+                placeholder="City name..."
+              />
+            </Form.Group>
+
+            {/* add other inputs here */}
+          </Form>
+          {/* <label>
             City:
             <input
               type="text"
@@ -63,7 +78,7 @@ export default class AddressDialog extends React.Component {
               value={this.state.addressForEdit?.city}
               onChange={this.handleChange}
             ></input>
-          </label>
+          </label> */}
           <label>
             Address:
             <input

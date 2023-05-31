@@ -27,7 +27,6 @@ export default class AdminDrivers {
       phone_num: phone,
       distribution_area: distributionArea,
     };
-    let response;
     try {
       const res = await fetch(`${BACKEND_HOST}/drivers`, {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
@@ -37,11 +36,12 @@ export default class AdminDrivers {
         body: JSON.stringify(payload), // body data type must match "Content-Type" header
       });
 
-      response = await res.json();
+      if (!res.ok) {
+        throw new Error(`Error status: ${res.status}`);
+      }
     } catch (e) {
       throw e;
     }
-    return response;
   }
 
   // UPDATE / PUT
@@ -53,7 +53,7 @@ export default class AdminDrivers {
       phone_num: phone,
       distribution_area: distributionArea,
     };
-    let response;
+
     try {
       const res = await fetch(`${BACKEND_HOST}/drivers/${id}`, {
         method: "PUT", // *GET, POST, PUT, DELETE, etc.
@@ -62,26 +62,26 @@ export default class AdminDrivers {
         },
         body: JSON.stringify(payload), // body data type must match "Content-Type" header
       });
-
-      response = await res.json();
+      if (!res.ok) {
+        throw new Error(`Error status: ${res.status}`);
+      }
     } catch (e) {
       throw e;
     }
-    return response;
   }
 
   //DELETE
   async deleteDriver(id) {
-    let response;
     try {
       const res = await fetch(`${BACKEND_HOST}/drivers/${id}`, {
         method: "DELETE", // *GET, POST, PUT, DELETE, etc.
         body: JSON.stringify(), // body data type must match "Content-Type" header
       });
-      response = await res.json();
+      if (!res.ok) {
+        throw new Error(`Error status: ${res.status}`);
+      }
     } catch (e) {
       throw e;
     }
-    return response;
   }
 }

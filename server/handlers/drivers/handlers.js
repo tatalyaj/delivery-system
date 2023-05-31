@@ -1,7 +1,6 @@
 const mockData = require("./../../mock-data");
-const validPhoneRegex =
-  /^(?:(?:(\+?972|\(\+?972\)|\+?\(972\))(?:\s|\.|-)?([1-9]\d?))|(0[23489]{1})|(0[57]{1}[0-9]))(?:\s|\.|-)?([^0\D]{1}\d{2}(?:\s|\.|-)?\d{4})$/;
-const validNameRegex = /^[a-zA-Z ]{2,40}$/;
+const regexValidation = require("./../../utils/Regex");
+const validation = require("./../../utils/validations");
 
 // GET drivers handler
 const handleGetDrivers = (req, res) => {
@@ -25,17 +24,23 @@ const handlePostDriver = (req, res) => {
   // validate that all data is present and valid (not empty, phone pattern (regex))
   // [1,2] -> array length = 2 - bug if we use array.length
   if (isDriverValid(data)) {
+    let newId;
+    try {
+      newId = validation.generateUUID(drivers);
+    } catch (e) {
+      res.sendStatus(500);
+      return;
+    }
     drivers.push({
-      id: drivers.length, // check if ID already exists (UUID)
+      id: newId,
       firstName: data.first_name,
       lastName: data.last_name,
       phone: data.phone_num,
       distributionArea: data.distribution_area,
     });
-    res.json(drivers);
+    res.sendStatus(200);
   } else {
     res.sendStatus(404);
-    throw new Error();
   }
 };
 // PUT -  driver update handler
@@ -51,10 +56,9 @@ const handlePutDriver = (req, res) => {
     drivers[drivers.indexOf(driver)].lastName = data.last_name;
     drivers[drivers.indexOf(driver)].phone = data.phone_num;
     drivers[drivers.indexOf(driver)].distributionArea = data.distribution_area;
-    res.json(drivers);
+    res.sendStatus(200);
   } else {
     res.sendStatus(404);
-    throw new Error();
   }
 };
 // DELETE - delete driver handler - usually, we don't respond with the changed data - the UI should call GET DRIVERS after a successful deletion / edition
@@ -65,21 +69,22 @@ const handleDeleteDriver = (req, res) => {
   // validate that driverToDelete exists
   if (driverToDelete) {
     drivers.splice(drivers.indexOf(driverToDelete), 1);
-    res.json(drivers);
+    res.sendStatus(200);
   } else {
     res.sendStatus(404);
-    throw new Error();
   }
 };
 
 // validation function can be used in post and put
 const isDriverValid = (driver) => {
   // return !(!driver.first_name || !driver.last_name || ...) === !!driver.first_name && !!driver.last_name...
-  if (!validNameRegex.test(driver.first_name)) {
+  const validPhone = regexValidation.validPhoneRegex;
+  const validName = regexValidation.validNameRegex;
+  if (!validName.test(driver.first_name)) {
     return false;
-  } else if (!validNameRegex.test(driver.last_name)) {
+  } else if (!validName.test(driver.last_name)) {
     return false;
-  } else if (!validPhoneRegex.test(driver.phone_num)) {
+  } else if (!validPhone.test(driver.phone_num)) {
     return false;
   } else if (!driver.distribution_area) {
     return false;

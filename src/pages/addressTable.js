@@ -28,7 +28,7 @@ export default class AddressTable extends React.Component {
             <th scope="col"> City </th>
             <th scope="col"> Address </th>
             <th scope="col"> Delivery Type </th>
-            <th scope="col">Frequency </th>
+            <th scope="col"> Frequency </th>
             <th scope="col"> Recipient Name </th>
             <th scope="col"> Recipient Phone </th>
             <th scope="col"> Assigned To: </th>

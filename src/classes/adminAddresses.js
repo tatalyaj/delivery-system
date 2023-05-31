@@ -37,8 +37,6 @@ export default class AdminAddresses {
       recipient_name: recipientName,
       recipient_phone: recipientPhone,
     };
-
-    let response;
     try {
       const res = await fetch(`${BACKEND_HOST}/addresses`, {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
@@ -48,12 +46,12 @@ export default class AdminAddresses {
         body: JSON.stringify(payload), // body data type must match "Content-Type" header
       });
 
-      response = await res.json(); // usually we don't receive the updated list on actions like add, edit , delete
+      if (!res.ok) {
+        throw new Error(`Error status: ${res.status}`);
+      }
     } catch (e) {
       throw e;
     }
-
-    return response;
   }
 
   // PUT / UPDATE
@@ -77,7 +75,7 @@ export default class AdminAddresses {
       recipient_phone: recipientPhone,
     };
     //console.log(payload);
-    let response;
+
     try {
       const res = await fetch(`${BACKEND_HOST}/addresses/${id}`, {
         method: "PUT", // *GET, POST, PUT, DELETE, etc.
@@ -86,27 +84,27 @@ export default class AdminAddresses {
         },
         body: JSON.stringify(payload), // body data type must match "Content-Type" header
       });
-
-      response = await res.json();
+      if (!res.ok) {
+        throw new Error(`Error status: ${res.status}`);
+      }
     } catch (e) {
       throw e;
     }
-    return response;
   }
 
   // DELETE
   async deleteAddress(id) {
-    let response;
     try {
       const res = await fetch(`${BACKEND_HOST}/addresses/${id}`, {
         method: "DELETE", // *GET, POST, PUT, DELETE, etc.
         body: JSON.stringify(), // body data type must match "Content-Type" header
       });
 
-      response = await res.json();
+      if (!res.ok) {
+        throw new Error(`Error status: ${res.status}`);
+      }
     } catch (e) {
       throw e;
     }
-    return response;
   }
 }

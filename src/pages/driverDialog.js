@@ -60,7 +60,7 @@ export default class DriverDialog extends React.Component {
             ></input>
           </label>
           <label>
-            Address:
+            Last Name:
             <input
               type="text"
               name="lastName"

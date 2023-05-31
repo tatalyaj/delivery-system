@@ -46,6 +46,19 @@ app.put("/addresses/:id", addressHandlers.handlePutAddress);
 // DELETE ADDRESS
 app.delete("/addresses/:id", addressHandlers.handleDeleteAddress);
 
+/**
+ * NEXT STEPS:
+ * BE: EXPORT GenerateUUID & REGEXES to utils and consume from there
+ * FE: Replace all dialog inputs with Bootstrap inputs, Add validations in UI
+ *     - validate empty inputs and show errors (prevent sending data to BE & don't close dialog)
+ *     - validate valid input data (phone number, age, email)
+ *  - Add dialog - should always have clear inputs (bug)
+ *
+ * - NEXT STEPS: add "fake" login page
+ * -- when username is admin -> redirect to admin page
+ * -- when username is !admin -> redirect to driver page
+ */
+
 //****** Explainations******
 // ****** Number 1*******
 // RESTful API
