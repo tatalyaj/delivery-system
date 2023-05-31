@@ -1,4 +1,5 @@
 import React from "react";
+import { Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
@@ -50,42 +51,54 @@ export default class DriverDialog extends React.Component {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <label>
-            First Name:
-            <input
-              type="text"
-              name="firstName"
-              value={this.state.driverForEdit?.firstName}
-              onChange={this.handleChange}
-            ></input>
-          </label>
-          <label>
-            Last Name:
-            <input
-              type="text"
-              name="lastName"
-              value={this.state.driverForEdit?.lastName}
-              onChange={this.handleChange}
-            ></input>
-          </label>
-          <label>
-            Phone Number:
-            <input
-              type="text"
-              name="phone"
-              value={this.state.driverForEdit?.phone}
-              onChange={this.handleChange}
-            ></input>
-          </label>
-          <label>
-            Distribution Area:
-            <input
-              type="text"
-              name="distributionArea"
-              value={this.state.driverForEdit?.distributionArea}
-              onChange={this.handleChange}
-            ></input>
-          </label>
+          <Form>
+            <Form.Group className="mb-3" controlId="form.ControlInputFirstName">
+              <Form.Label>First Name</Form.Label>
+              <Form.Control
+                type="text"
+                name="firstName"
+                defaultValue={this.state.driverForEdit?.firstName}
+                onChange={this.handleChange}
+                placeholder="First name..."
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="form.ControlInputLastName">
+              <Form.Label>Last Name</Form.Label>
+              <Form.Control
+                type="text"
+                name="lastName"
+                defaultValue={this.state.driverForEdit?.lastName}
+                onChange={this.handleChange}
+                placeholder="Last name..."
+              />
+            </Form.Group>
+            <Form.Group
+              className="mb-3"
+              controlId="form.ControlInputPhoneNumber"
+            >
+              <Form.Label> Phone Number</Form.Label>
+              <Form.Control
+                type="text"
+                name="phone"
+                defaultValue={this.state.driverForEdit?.phone}
+                onChange={this.handleChange}
+                placeholder="Phone number..."
+              />
+            </Form.Group>
+            <Form.Group
+              className="mb-3"
+              controlId="form.ControlInputDistributionArea"
+            >
+              <Form.Label> Distribution Area</Form.Label>
+              <Form.Control
+                type="text"
+                name="distributionArea"
+                defaultValue={this.state.driverForEdit?.distributionArea}
+                onChange={this.handleChange}
+                placeholder="Distribution area..."
+              />
+            </Form.Group>
+          </Form>
         </Modal.Body>
         <Modal.Footer>
           <Button

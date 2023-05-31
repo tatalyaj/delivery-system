@@ -57,7 +57,7 @@ export default class AddressDialog extends React.Component {
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+            <Form.Group className="mb-3" controlId="form.ControlInputCity">
               <Form.Label>City</Form.Label>
               <Form.Control
                 type="text"
@@ -67,63 +67,66 @@ export default class AddressDialog extends React.Component {
                 placeholder="City name..."
               />
             </Form.Group>
-
-            {/* add other inputs here */}
+            <Form.Group className="mb-3" controlId="form.ControlInputAddress">
+              <Form.Label>Address</Form.Label>
+              <Form.Control
+                type="text"
+                name="address"
+                defaultValue={this.state.addressForEdit?.address}
+                onChange={this.handleChange}
+                placeholder="Address name..."
+              />
+            </Form.Group>
+            <Form.Group
+              className="mb-3"
+              controlId="form.ControlInputDeliveryType"
+            >
+              <Form.Label> Delivery Type</Form.Label>
+              <Form.Control
+                type="text"
+                name="deliveryType"
+                defaultValue={this.state.addressForEdit?.deliveryType}
+                onChange={this.handleChange}
+                placeholder="Delivery type..."
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="form.ControlInputFrequency">
+              <Form.Label> Frequency</Form.Label>
+              <Form.Control
+                type="text"
+                name="frequency"
+                defaultValue={this.state.addressForEdit?.frequency}
+                onChange={this.handleChange}
+                placeholder="Frequency..."
+              />
+            </Form.Group>
+            <Form.Group
+              className="mb-3"
+              controlId="form.ControlInputRecipientName"
+            >
+              <Form.Label> Recipient Name</Form.Label>
+              <Form.Control
+                type="text"
+                name="recipientName"
+                defaultValue={this.state.addressForEdit?.recipientName}
+                onChange={this.handleChange}
+                placeholder="Frequency..."
+              />
+            </Form.Group>
+            <Form.Group
+              className="mb-3"
+              controlId="form.ControlInputRecipientPhone"
+            >
+              <Form.Label> Recipient Phone Number</Form.Label>
+              <Form.Control
+                type="text"
+                name="recipientPhone"
+                defaultValue={this.state.addressForEdit?.recipientPhone}
+                onChange={this.handleChange}
+                placeholder="Recipient phone number..."
+              />
+            </Form.Group>
           </Form>
-          {/* <label>
-            City:
-            <input
-              type="text"
-              name="city"
-              value={this.state.addressForEdit?.city}
-              onChange={this.handleChange}
-            ></input>
-          </label> */}
-          <label>
-            Address:
-            <input
-              type="text"
-              name="address"
-              value={this.state.addressForEdit?.address}
-              onChange={this.handleChange}
-            ></input>
-          </label>
-          <label>
-            Delivery type:
-            <input
-              type="text"
-              name="deliveryType"
-              value={this.state.addressForEdit?.deliveryType}
-              onChange={this.handleChange}
-            ></input>
-          </label>
-          <label>
-            Frequency:
-            <input
-              type="text"
-              name="frequency"
-              value={this.state.addressForEdit?.frequency}
-              onChange={this.handleChange}
-            ></input>
-          </label>
-          <label>
-            Recipient name:
-            <input
-              type="text"
-              name="recipientName"
-              value={this.state.addressForEdit?.recipientName}
-              onChange={this.handleChange}
-            ></input>
-          </label>
-          <label>
-            Recipient Phone number:
-            <input
-              type="text"
-              name="recipientPhone"
-              value={this.state.addressForEdit?.recipientPhone}
-              onChange={this.handleChange}
-            ></input>
-          </label>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => this.handleClose()}>
