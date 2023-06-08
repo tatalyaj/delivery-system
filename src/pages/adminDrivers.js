@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
-import Alert from "react-bootstrap/Alert";
+//import Alert from "react-bootstrap/Alert";
 import AdminDrivers from "../classes/adminDrivers";
 import DriverDialog from "./driverDialog";
 import DriverTable from "./driverTable";
@@ -19,7 +19,8 @@ export default class AdminDriversPage extends React.Component {
       lastName: null,
       phone: null,
       distributionArea: null,
-      showAlert: false,
+      // showAlert: false,
+      //validated: true,
     };
   }
 
@@ -57,13 +58,15 @@ export default class AdminDriversPage extends React.Component {
       this.setState({
         ...this.state,
         errorMessage: "Invalid Add Request",
-        showAlert: true,
+        // showAlert: true,
+        //validated: false,
       });
       return;
     }
     this.setState({
       ...this.state,
-      showAlert: false,
+      // showAlert: false,
+      //validated: true,
     });
     await this.getDrivers();
   }
@@ -86,13 +89,15 @@ export default class AdminDriversPage extends React.Component {
       this.setState({
         ...this.state,
         errorMessage: "Invalid Update Request",
-        showAlert: true,
+        // showAlert: true,
+        //validated: false,
       });
       return;
     }
     this.setState({
       ...this.state,
-      showAlert: false,
+      // showAlert: false,
+      //validated: true,
     });
     await this.getDrivers();
   }
@@ -110,6 +115,7 @@ export default class AdminDriversPage extends React.Component {
       lastName: null,
       phone: null,
       distributionArea: null,
+      validate: true,
     });
   }
 
@@ -122,13 +128,15 @@ export default class AdminDriversPage extends React.Component {
       this.setState({
         ...this.state,
         errorMessage: "User Not Found!",
-        showAlert: true,
+        // showAlert: true,
+        //validated: false,
       });
       return;
     }
     this.setState({
       ...this.state,
-      showAlert: false,
+      // showAlert: false,
+      //validated: true,
     });
     await this.getDrivers();
   }
@@ -136,13 +144,13 @@ export default class AdminDriversPage extends React.Component {
   render() {
     return (
       <div>
-        {this.state?.errorMessage ? (
+        {/* {this.state?.errorMessage ? (
           <Alert variant={"danger"} show={this.state.showAlert}>
             {this.state?.errorMessage}
           </Alert>
         ) : (
           ""
-        )}
+        )} */}
         <Button
           className="add-button "
           variant="outline-success"

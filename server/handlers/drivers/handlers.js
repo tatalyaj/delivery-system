@@ -52,10 +52,10 @@ const handlePutDriver = (req, res) => {
   // validate that driver was indeed found (like in get)
   // driver.firstName = data.first_name;
   if (driver && isDriverValid(data)) {
-    drivers[drivers.indexOf(driver)].firstName = data.first_name;
-    drivers[drivers.indexOf(driver)].lastName = data.last_name;
-    drivers[drivers.indexOf(driver)].phone = data.phone_num;
-    drivers[drivers.indexOf(driver)].distributionArea = data.distribution_area;
+    driver.firstName = data.first_name;
+    driver.lastName = data.last_name;
+    driver.phone = data.phone_num;
+    driver.distributionArea = data.distribution_area;
     res.sendStatus(200);
   } else {
     res.sendStatus(404);

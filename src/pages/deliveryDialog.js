@@ -5,22 +5,23 @@ import Modal from "react-bootstrap/Modal";
 
 // export const AddressDialogContext = createContext({ showDialog: false });
 
-export default class AddressDialog extends React.Component {
+export default class DeliveryDialog extends React.Component {
   constructor(props) {
     super(props);
     this.props = props;
 
     this.state = {
-      addressForEdit: this.props?.addressForEdit
-        ? { ...this.props?.addressForEdit }
+      deliveryForEdit: this.props?.deliveryForEdit
+        ? { ...this.props?.deliveryForEdit }
         : {
-            addressForEdit: null,
+            deliveryForEdit: null,
             city: null,
             address: null,
             deliveryType: null,
             frequency: null,
             recipientName: null,
             recipientPhone: null,
+            done: false,
           },
 
       showDialog: false,
@@ -29,20 +30,21 @@ export default class AddressDialog extends React.Component {
   // HANDLE CLOSE DIALOG
   handleClose() {
     this.setState({
-      showAddressDialog: false,
-      addressForEdit: null,
+      showDeliveryDialog: false,
+      deliveryForEdit: null,
       city: null,
       address: null,
       deliveryType: null,
       frequency: null,
       recipientName: null,
       recipientPhone: null,
+      done: null,
     });
     this.props.onDialogClose();
   }
   // HANDLE THE SAVE CHANGES BUTTON
-  handleSaveAddress = (address) => {
-    this.props.onAddressChanged(address);
+  handleSaveDelivery = (delivery) => {
+    this.props.onDeliveryChanged(delivery);
     this.handleClose();
   };
   // HANDLE CHANGE
@@ -50,8 +52,8 @@ export default class AddressDialog extends React.Component {
     const { name, value } = e.target;
     //console.log(name, value);
     this.setState({
-      addressForEdit: {
-        ...this.state.addressForEdit,
+      deliveryForEdit: {
+        ...this.state.deliveryForEdit,
         [name]: value,
       },
     });
@@ -62,7 +64,7 @@ export default class AddressDialog extends React.Component {
       <Modal show={this.props.showDialog} onHide={this.handleClose.bind(this)}>
         <Modal.Header closeButton>
           <Modal.Title>
-            {this.props.addressForEdit ? "Edit address" : "Add address"}
+            {this.props.deliveryForEdit ? "Edit delivery" : "Add delivery"}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -72,7 +74,7 @@ export default class AddressDialog extends React.Component {
               <Form.Control
                 type="text"
                 name="city"
-                defaultValue={this.state.addressForEdit?.city}
+                defaultValue={this.state.deliveryForEdit?.city}
                 onChange={this.handleChange}
                 placeholder="City name..."
               />
@@ -82,7 +84,7 @@ export default class AddressDialog extends React.Component {
               <Form.Control
                 type="text"
                 name="address"
-                defaultValue={this.state.addressForEdit?.address}
+                defaultValue={this.state.deliveryForEdit?.address}
                 onChange={this.handleChange}
                 placeholder="Address name..."
               />
@@ -95,7 +97,7 @@ export default class AddressDialog extends React.Component {
               <Form.Control
                 type="text"
                 name="deliveryType"
-                defaultValue={this.state.addressForEdit?.deliveryType}
+                defaultValue={this.state.deliveryForEdit?.deliveryType}
                 onChange={this.handleChange}
                 placeholder="Delivery type..."
               />
@@ -105,7 +107,7 @@ export default class AddressDialog extends React.Component {
               <Form.Control
                 type="text"
                 name="frequency"
-                defaultValue={this.state.addressForEdit?.frequency}
+                defaultValue={this.state.deliveryForEdit?.frequency}
                 onChange={this.handleChange}
                 placeholder="Frequency..."
               />
@@ -118,7 +120,7 @@ export default class AddressDialog extends React.Component {
               <Form.Control
                 type="text"
                 name="recipientName"
-                defaultValue={this.state.addressForEdit?.recipientName}
+                defaultValue={this.state.deliveryForEdit?.recipientName}
                 onChange={this.handleChange}
                 placeholder="Frequency..."
               />
@@ -131,9 +133,19 @@ export default class AddressDialog extends React.Component {
               <Form.Control
                 type="text"
                 name="recipientPhone"
-                defaultValue={this.state.addressForEdit?.recipientPhone}
+                defaultValue={this.state.deliveryForEdit?.recipientPhone}
                 onChange={this.handleChange}
                 placeholder="Recipient phone number..."
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="form.ControlInputDone">
+              <Form.Label> Done</Form.Label>
+              <Form.Control
+                type="text"
+                name="done"
+                defaultValue={this.state.deliveryForEdit?.done}
+                onChange={this.handleChange}
+                placeholder="Done..."
               />
             </Form.Group>
           </Form>
@@ -144,7 +156,7 @@ export default class AddressDialog extends React.Component {
           </Button>
           <Button
             variant="primary"
-            onClick={() => this.handleSaveAddress(this.state.addressForEdit)}
+            onClick={() => this.handleSaveDelivery(this.state.deliveryForEdit)}
           >
             Save Changes
           </Button>

@@ -7,6 +7,7 @@ const port = process.env.PORT || 5000;
 
 const driverHandlers = require("./handlers/drivers/handlers");
 const addressHandlers = require("./handlers/addresses/handlers");
+const deliveryHandlers = require("./handlers/deliveries/handlers");
 
 // For parsing application/json
 app.use(express.json());
@@ -45,6 +46,21 @@ app.put("/addresses/:id", addressHandlers.handlePutAddress);
 
 // DELETE ADDRESS
 app.delete("/addresses/:id", addressHandlers.handleDeleteAddress);
+
+// ******************DELIVERIES*****************
+// GET DELIVERIES
+app.get("/deliveries", deliveryHandlers.handleGetDeliveries);
+// Get a single address based on id
+app.get("/deliveries/:id", deliveryHandlers.handleGetDeliveryById);
+
+// PUT -UPDATE an delivery
+app.put("/deliveries/:id", deliveryHandlers.handlePutDelivery);
+
+// DELETE delivery
+app.delete("/deliveries/:id", deliveryHandlers.handleDeleteDelivery);
+
+// CHECK delivery
+app.delete("/deliveries/:id", deliveryHandlers.handleCheckDelivery);
 
 /**
  * NEXT STEPS:

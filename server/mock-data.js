@@ -117,5 +117,78 @@ const drivers = [
   },
 ];
 
-module.exports = { drivers, addresses };
+const deliveryAddresses = [
+  {
+    id: 0,
+    city: "Jerusalem",
+    address: "King george 22",
+    deliveryType: "medicine",
+    frequency: "High",
+    recipientName: "John",
+    recipientPhone: "972 54-333-4444",
+    done: null,
+  },
+  {
+    id: 1,
+    city: "Haifa",
+    address: "Bar gyora 10",
+    deliveryType: "medicine",
+    frequency: "High",
+    recipientName: "James",
+    recipientPhone: "+972-54-333-4444",
+    done: null,
+  },
+  {
+    id: 2,
+    city: "Tel-Aviv",
+    address: "Shenkin 20",
+    deliveryType: "medicine",
+    frequency: "Low",
+    recipientName: "Sarah",
+    recipientPhone: "02-3334444",
+    done: null,
+  },
+  {
+    id: 3,
+    city: "Eilat",
+    address: "Hanachal 12",
+    deliveryType: "medicine",
+    frequency: "Low",
+    recipientName: "Josh",
+    recipientPhone: "02 3334444",
+    done: null,
+  },
+  {
+    id: 4,
+    city: "Ra'anana",
+    address: "Haneviim 3",
+    deliveryType: "food",
+    frequency: "Low",
+    recipientName: "Julian",
+    recipientPhone: "023334444",
+    done: null,
+  },
+  {
+    id: 5,
+    city: "Zichron",
+    address: "Neve 15",
+    deliveryType: "food",
+    frequency: "Low",
+    recipientName: "Natasha",
+    recipientPhone: "050-333-4444",
+    done: null,
+  },
+  {
+    id: 6,
+    city: "Tiberia",
+    address: "Kineret 6",
+    deliveryType: "food",
+    frequency: "Low",
+    recipientName: "Ron",
+    recipientPhone: "(+972)54-333-4444",
+    done: null,
+  },
+];
+
+module.exports = { drivers, addresses, deliveryAddresses };
 // module.exports = {drivers: drivers, addresses: addresses};

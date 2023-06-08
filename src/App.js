@@ -12,7 +12,7 @@ import Home from "./pages";
 import AdminAddressesPage from "./pages/adminAddresses";
 import AdminDriversPage from "./pages/adminDrivers";
 //import AdminPage from "./pages/admin";
-import Driver from "./pages/delivery";
+import DeliveriesPage from "./pages/delivery";
 //import "./server";
 
 class App extends React.Component {
@@ -46,7 +46,7 @@ class App extends React.Component {
       link: "/adminDrivers",
     },
     {
-      text: "Driver",
+      text: "Deliveries",
       link: "/delivery",
     },
     {
@@ -73,7 +73,7 @@ class App extends React.Component {
                   element={<AdminAddressesPage />}
                 />
                 <Route path="/adminDrivers" element={<AdminDriversPage />} />
-                <Route path="/delivery" element={<Driver />} />
+                <Route path="/delivery" element={<DeliveriesPage />} />
               </Routes>
             </Col>
           </Row>

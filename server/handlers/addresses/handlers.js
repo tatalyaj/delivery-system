@@ -53,12 +53,13 @@ const handlePutAddress = (req, res) => {
   //console.log(address);
   if (address && isAddressValid(data)) {
     // address.city = data.city (should work because array.find returns an object by reference)
-    addresses[addresses.indexOf(address)].city = data.city;
-    addresses[addresses.indexOf(address)].address = data.address;
-    addresses[addresses.indexOf(address)].deliveryType = data.delivery_type;
-    addresses[addresses.indexOf(address)].frequency = data.frequency;
-    addresses[addresses.indexOf(address)].recipientName = data.recipient_name;
-    addresses[addresses.indexOf(address)].recipientPhone = data.recipient_phone;
+    // addresses[addresses.indexOf(address)].city = data.city;
+    address.city = data.city;
+    address.address = data.address;
+    address.deliveryType = data.delivery_type;
+    address.frequency = data.frequency;
+    address.recipientName = data.recipient_name;
+    address.recipientPhone = data.recipient_phone;
     res.sendStatus(200);
   } else {
     res.sendStatus(404);
