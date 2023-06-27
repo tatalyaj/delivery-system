@@ -1,6 +1,6 @@
 const mockData = require("./../../mock-data");
-const regexValidation = require("./../../utils/regexUtils");
-const validation = require("./../../utils/validations");
+const regexValidation = require("../../utils/regexUtils");
+const validation = require("../../utils/validations");
 
 // GET addresses handler
 const handleGetAddresses = (req, res) => {

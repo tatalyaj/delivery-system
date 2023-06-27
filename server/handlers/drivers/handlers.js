@@ -1,6 +1,6 @@
 const mockData = require("./../../mock-data");
-const regexValidation = require("./../../utils/regexUtils");
-const validation = require("./../../utils/validations");
+const regexValidation = require("../../utils/regexUtils");
+const validation = require("../../utils/validations");
 
 // GET drivers handler
 const handleGetDrivers = (req, res) => {

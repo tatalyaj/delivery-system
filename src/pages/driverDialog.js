@@ -2,7 +2,7 @@ import React from "react";
 import { Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import regexValidation from "./../utils/Regex";
+import regexValidation from "../utils/regexUtils";
 
 export default class DriverDialog extends React.Component {
   constructor(props) {
