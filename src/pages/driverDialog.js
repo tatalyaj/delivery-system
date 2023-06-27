@@ -2,11 +2,7 @@ import React from "react";
 import { Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import * as formik from "formik";
 import regexValidation from "./../utils/Regex";
-//import InputGroup from "react-bootstrap/InputGroup";
-
-// inputs should be validated - if not valid - show error
 
 export default class DriverDialog extends React.Component {
   constructor(props) {
@@ -24,76 +20,8 @@ export default class DriverDialog extends React.Component {
             distributionArea: null,
           },
       showDialog: false,
-      // errors: {
-      //   // eFirstName: null,
-      //   // eLastName: null,
-      //   // ePhone: null,
-      //   // eDistributionArea: null,
-      // },
-      // valid: true,
     };
   }
-
-  // // Validation function can be used in post and put
-  // isDriverValidFunc = (driver) => {
-  //   let isDriverValid = null;
-  //   const validPhone = regexValidation.validPhoneRegex;
-  //   const validName = regexValidation.validNameRegex;
-  //   if (!validName.test(driver.firstName) || !driver.firstName) {
-  //     this.setState({
-  //       //...this.state,
-  //       errors: {
-  //         ...this.state.errors,
-  //         eFirstName: "Please choose a valid  first name.",
-  //       },
-  //     });
-  //     console.log(
-  //       `isDriverValid func: eFirstName is : ${this.state.errors?.eFirstName}`
-  //     );
-  //     isDriverValid = false;
-  //   } else if (!validName.test(driver.lastName) || !driver.lastName) {
-  //     this.setState({
-  //       //...this.state,
-  //       errors: {
-  //         ...this.state.errors,
-  //         eLastName: "Please choose a valid  last name.",
-  //       },
-  //     });
-  //     console.log(
-  //       `isDriverValid func: eLastName is : ${this.state.errors?.eLastName}`
-  //     );
-  //     isDriverValid = false;
-  //   } else if (!validPhone.test(driver.phone) || !driver.phone) {
-  //     this.setState({
-  //       //...this.state,
-  //       errors: {
-  //         ...this.state.errors,
-  //         ePhone: "Please choose a valid  phone number.",
-  //       },
-  //     });
-  //     console.log(
-  //       `isDriverValid func: ePhone is : ${this.state.errors?.ePhone}`
-  //     );
-  //     isDriverValid = false;
-  //   } else if (!driver.distributionArea) {
-  //     this.setState({
-  //       //...this.state,
-  //       errors: {
-  //         ...this.state.errors,
-  //         eDistributionArea: "Please choose a valid  distribution area.",
-  //       },
-  //     });
-
-  //     console.log(
-  //       `isDriverValid func: eDistributionArea is : ${this.state.errors?.eDistributionArea}`
-  //     );
-  //     isDriverValid = false;
-  //   } else {
-  //     isDriverValid = true;
-  //   }
-
-  //   return isDriverValid;
-  // };
 
   // Validation function can be used in post and put
   isDriverValidFunc = (driver) => {
@@ -102,89 +30,34 @@ export default class DriverDialog extends React.Component {
     const validName = regexValidation.validNameRegex;
     // For the field names - An array containing all the Object's properties
     let fieldNames = Object.getOwnPropertyNames(driver);
-    //console.log(fieldNames[1]);
     const errors = {};
-    //const arraySize = fieldNames.length;
     for (const item of fieldNames) {
-      //for (let i = 1; i < arraySize; i++) {
-      // switch (fieldNames[i]) {
       switch (item) {
         case "firstName":
           if (!validName.test(driver.firstName) || !driver.firstName) {
-            //this.setState({
-            //...this.state,
             errors["eFirstName"] = "Please choose a valid  first name.";
-            //},
-            // });
-            // console.log(i);
-            console.log(
-              `isDriverValid func: eFirstName is : ${this.state.errors?.eFirstName}`
-            );
             isDriverValid = false;
           }
-          // continue;
           break;
         case "lastName":
           if (!validName.test(driver.lastName) || !driver.lastName) {
             errors["eLastName"] = "Please choose a valid  last name.";
-
-            // this.setState({
-            //   //...this.state,
-            //   errors: {
-            //     ...this.state.errors,
-            //     eLastName: "Please choose a valid  last name.",
-            //   },
-            // });
-            // console.log(i);
-            console.log(
-              `isDriverValid func: eLastName is : ${this.state.errors?.eLastName}`
-            );
-
             isDriverValid = false;
           }
           break;
-        // continue;
         case "phone":
           if (!validPhone.test(driver.phone) || !driver.phone) {
             errors["ePhone"] = "Please choose a valid  phone number.";
-
-            // this.setState({
-            //   //...this.state,
-            //   errors: {
-            //     ...this.state.errors,
-            //     ePhone: "Please choose a valid  phone number.",
-            //   },
-            // });
-            // console.log(i);
-            console.log(
-              `isDriverValid func: ePhone is : ${this.state.errors?.ePhone}`
-            );
-
             isDriverValid = false;
           }
           break;
-        // continue;
         case "distributionArea":
           if (!driver.distributionArea) {
             errors["eDistributionArea"] =
               "Please choose a valid  distribution area.";
-
-            // this.setState({
-            //   //...this.state,
-            //   errors: {
-            //     ...this.state.errors,
-            //     eDistributionArea: "Please choose a valid  distribution area.",
-            //   },
-            // });
-            // console.log(i);
-            console.log(
-              `isDriverValid func: eDistributionArea is : ${this.state.errors?.eDistributionArea}`
-            );
-
             isDriverValid = false;
           }
           break;
-        // continue;
         default:
           break;
       }
@@ -208,7 +81,6 @@ export default class DriverDialog extends React.Component {
         ePhone: null,
         eDistributionArea: null,
       },
-      // valid: true,
     });
     this.props.onDialogClose();
   }
@@ -220,20 +92,12 @@ export default class DriverDialog extends React.Component {
       console.log("Driver is valid");
       this.handleClose();
     } else {
-      // this.setState({
-      //   ...this.state,
-      //   errors: {
-      //     ...this.state.errors,
-      //   },
-      //   //valid: false,
-      // });
       console.log("not valid");
     }
   };
   // HANDLE CHAMGE
   handleChange = (e) => {
     const { name, value } = e.target;
-    //let currentError = "e" + name.charAt(0).toUpperCase() + name.slice(1);
     this.setState({
       driverForEdit: {
         ...this.state.driverForEdit,
@@ -244,8 +108,6 @@ export default class DriverDialog extends React.Component {
         ["e" + name.charAt(0).toUpperCase() + name.slice(1)]: null,
       },
     });
-    //console.log(currentError);
-    // console.log(`In onChange currentError is ${this.errors} `);
   };
 
   render() {
@@ -273,11 +135,6 @@ export default class DriverDialog extends React.Component {
                 placeholder="First name..."
                 isInvalid={!!this.state.errors?.eFirstName}
               />
-              {/* {this.state.errors.eFirstName ? (
-                <Form.Control.Feedback type="invalid">
-                  {this.state.errors.eFirstName}
-                </Form.Control.Feedback>
-              ) : null} */}
               <Form.Control.Feedback type="invalid">
                 {this.state.errors?.eFirstName}
               </Form.Control.Feedback>
@@ -350,7 +207,3 @@ export default class DriverDialog extends React.Component {
     );
   }
 }
-
-// required
-// validated={this.state.valid}
-// isInvalid={!this.state.valid}
