@@ -2,8 +2,7 @@ import React from "react";
 import { Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-
-// export const AddressDialogContext = createContext({ showDialog: false });
+import regexValidation from "../utils/regexUtils";
 
 export default class AddressDialog extends React.Component {
   constructor(props) {
@@ -21,6 +20,7 @@ export default class AddressDialog extends React.Component {
             frequency: null,
             recipientName: null,
             recipientPhone: null,
+            assignedTo: null,
           },
 
       showDialog: false,
@@ -37,18 +37,101 @@ export default class AddressDialog extends React.Component {
       frequency: null,
       recipientName: null,
       recipientPhone: null,
+      assignedTo: null,
+      errors: {
+        eCity: null,
+        eAddress: null,
+        eDeliveryType: null,
+        eFrequency: null,
+        eRecipientName: null,
+        eRecipientPhone: null,
+        eAssignedTo: null,
+      },
     });
     this.props.onDialogClose();
   }
+
+  // Validation function can be used in post and put
+  isAddressValidFunc = (address) => {
+    let isAddressValid = true;
+    const validPhone = regexValidation.validPhoneRegex;
+    const validName = regexValidation.validNameRegex;
+    // For the field names - An array containing all the Object's properties
+    let fieldNames = Object.getOwnPropertyNames(address);
+    const errors = {};
+    for (const item of fieldNames) {
+      switch (item) {
+        case "city":
+          if (!address.city) {
+            errors["eAddress"] = "Please choose a valid  city name.";
+            isAddressValid = false;
+          }
+          break;
+        case "address":
+          if (!address.address) {
+            errors["eAddress"] = "Please choose a valid  address name.";
+            isAddressValid = false;
+          }
+          break;
+        case "deliveryType":
+          if (!address.deliveryType) {
+            errors["eDeliveryType"] = "Please choose a valid  delivery type.";
+            isAddressValid = false;
+          }
+          break;
+        case "frequency":
+          if (!address.frequency) {
+            errors["eFrequency"] = "Please choose a valid  frequency type.";
+            isAddressValid = false;
+          }
+          break;
+        case "recipientName":
+          if (
+            !validName.test(address.recipientName) ||
+            !address.recipientName
+          ) {
+            errors["eRecipientName"] = "Please choose a valid  name.";
+            isAddressValid = false;
+          }
+          break;
+        case "recipientPhone":
+          if (
+            !validPhone.test(address.recipientPhone) ||
+            !address.recipientPhone
+          ) {
+            errors["eRecipientPhone"] = "Please choose a valid  phone number.";
+            isAddressValid = false;
+          }
+          break;
+        case "assignedTo":
+          if (!validName.test(address.assignedTo) || !address.assignedTo) {
+            errors["eAssignedTo"] = "Please choose a valid  name.";
+            isAddressValid = false;
+          }
+          break;
+
+        default:
+          break;
+      }
+    }
+    this.setState({ ...this.state, errors: errors });
+    return isAddressValid;
+  };
+
   // HANDLE THE SAVE CHANGES BUTTON
   handleSaveAddress = (address) => {
-    this.props.onAddressChanged(address);
-    this.handleClose();
+    let isValid = this.isAddressValidFunc(address);
+    if (isValid) {
+      this.props.onAddressChanged(address);
+      console.log("Address is valid");
+      this.handleClose();
+    } else {
+      console.log("not valid");
+    }
   };
   // HANDLE CHANGE
   handleChange = (e) => {
     const { name, value } = e.target;
-    //console.log(name, value);
     this.setState({
       addressForEdit: {
         ...this.state.addressForEdit,
@@ -75,7 +158,11 @@ export default class AddressDialog extends React.Component {
                 defaultValue={this.state.addressForEdit?.city}
                 onChange={this.handleChange}
                 placeholder="City name..."
+                isInvalid={!!this.state.errors?.eCity}
               />
+              <Form.Control.Feedback type="invalid">
+                {this.state.errors?.eCity}
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="mb-3" controlId="form.ControlInputAddress">
               <Form.Label>Address</Form.Label>
@@ -85,7 +172,11 @@ export default class AddressDialog extends React.Component {
                 defaultValue={this.state.addressForEdit?.address}
                 onChange={this.handleChange}
                 placeholder="Address name..."
+                isInvalid={!!this.state.errors?.eAddress}
               />
+              <Form.Control.Feedback type="invalid">
+                {this.state.errors?.eAddress}
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group
               className="mb-3"
@@ -98,7 +189,11 @@ export default class AddressDialog extends React.Component {
                 defaultValue={this.state.addressForEdit?.deliveryType}
                 onChange={this.handleChange}
                 placeholder="Delivery type..."
+                isInvalid={!!this.state.errors?.eDeliveryType}
               />
+              <Form.Control.Feedback type="invalid">
+                {this.state.errors?.eDeliveryType}
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="mb-3" controlId="form.ControlInputFrequency">
               <Form.Label> Frequency</Form.Label>
@@ -108,7 +203,11 @@ export default class AddressDialog extends React.Component {
                 defaultValue={this.state.addressForEdit?.frequency}
                 onChange={this.handleChange}
                 placeholder="Frequency..."
+                isInvalid={!!this.state.errors?.eFrequency}
               />
+              <Form.Control.Feedback type="invalid">
+                {this.state.errors?.eFrequency}
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group
               className="mb-3"
@@ -121,7 +220,11 @@ export default class AddressDialog extends React.Component {
                 defaultValue={this.state.addressForEdit?.recipientName}
                 onChange={this.handleChange}
                 placeholder="Frequency..."
+                isInvalid={!!this.state.errors?.eRecipientName}
               />
+              <Form.Control.Feedback type="invalid">
+                {this.state.errors?.eRecipientName}
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group
               className="mb-3"
@@ -134,7 +237,28 @@ export default class AddressDialog extends React.Component {
                 defaultValue={this.state.addressForEdit?.recipientPhone}
                 onChange={this.handleChange}
                 placeholder="Recipient phone number..."
+                isInvalid={!!this.state.errors?.eRecipientPhone}
               />
+              <Form.Control.Feedback type="invalid">
+                {this.state.errors?.eRecipientPhone}
+              </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group
+              className="mb-3"
+              controlId="form.ControlInputAssignedTo"
+            >
+              <Form.Label> Assigned to </Form.Label>
+              <Form.Control
+                type="text"
+                name="assignedTo"
+                defaultValue={this.state.addressForEdit?.assignedTo}
+                onChange={this.handleChange}
+                placeholder="Assigned to..."
+                isInvalid={!!this.state.errors?.eAssignedTo}
+              />
+              <Form.Control.Feedback type="invalid">
+                {this.state.errors?.eAssignedTo}
+              </Form.Control.Feedback>
             </Form.Group>
           </Form>
         </Modal.Body>

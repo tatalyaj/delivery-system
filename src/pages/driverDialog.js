@@ -103,10 +103,6 @@ export default class DriverDialog extends React.Component {
         ...this.state.driverForEdit,
         [name]: value,
       },
-      errors: {
-        ...this.state.errors,
-        ["e" + name.charAt(0).toUpperCase() + name.slice(1)]: null,
-      },
     });
   };
 
