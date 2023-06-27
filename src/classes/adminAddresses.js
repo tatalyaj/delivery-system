@@ -26,7 +26,8 @@ export default class AdminAddresses {
     deliveryType,
     frequency,
     recipientName,
-    recipientPhone
+    recipientPhone,
+    assignedTo
   ) {
     // data/payload
     const payload = {
@@ -36,6 +37,7 @@ export default class AdminAddresses {
       frequency: frequency,
       recipient_name: recipientName,
       recipient_phone: recipientPhone,
+      assigned_to: assignedTo,
     };
     try {
       const res = await fetch(`${BACKEND_HOST}/addresses`, {
@@ -62,7 +64,8 @@ export default class AdminAddresses {
     deliveryType,
     frequency,
     recipientName,
-    recipientPhone
+    recipientPhone,
+    assignedTo
   ) {
     // data/payload
     const payload = {
@@ -73,6 +76,7 @@ export default class AdminAddresses {
       frequency: frequency,
       recipient_name: recipientName,
       recipient_phone: recipientPhone,
+      assigned_to: assignedTo,
     };
     //console.log(payload);
 

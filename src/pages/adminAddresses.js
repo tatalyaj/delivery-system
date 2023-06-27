@@ -1,6 +1,5 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
-import Alert from "react-bootstrap/Alert";
 import AdminAddresses from "../classes/adminAddresses";
 import AddressDialog from "./addressDialog";
 import AddressTable from "./addressTable";
@@ -22,6 +21,7 @@ export default class AdminAddressesPage extends React.Component {
       frequency: null,
       recipientName: null,
       recipientPhone: null,
+      assignedTo: null,
       showAlert: false,
     };
   }
@@ -53,6 +53,7 @@ export default class AdminAddressesPage extends React.Component {
     frequency,
     recipientName,
     recipientPhone,
+    assignedTo,
   }) {
     try {
       // catch all errors, handle them in catch
@@ -62,23 +63,17 @@ export default class AdminAddressesPage extends React.Component {
         deliveryType,
         frequency,
         recipientName,
-        recipientPhone
+        recipientPhone,
+        assignedTo
       );
     } catch (e) {
-      // display error message
       this.setState({
         ...this.state,
         errorMessage: "Invalid Add Request",
         showAlert: true,
       });
-      // first do validations in BE - try to add invalid data from UI and display error
-      // only after that - add validation in UI
       return;
     }
-    this.setState({
-      ...this.state,
-      showAlert: false,
-    });
     await this.getAddresses();
   }
 
@@ -96,6 +91,7 @@ export default class AdminAddressesPage extends React.Component {
     frequency,
     recipientName,
     recipientPhone,
+    assignedTo,
   }) {
     try {
       await adminService.editAddress(
@@ -105,20 +101,17 @@ export default class AdminAddressesPage extends React.Component {
         deliveryType,
         frequency,
         recipientName,
-        recipientPhone
+        recipientPhone,
+        assignedTo
       );
     } catch (e) {
       this.setState({
         ...this.state,
         errorMessage: "Invalid Update Request",
-        showAlert: true,
       });
       return;
     }
-    this.setState({
-      ...this.state,
-      showAlert: false,
-    });
+
     await this.getAddresses();
   }
   // The  DIALOG - SHOW IN EDIT SCENARIO
@@ -151,28 +144,16 @@ export default class AdminAddressesPage extends React.Component {
       this.setState({
         ...this.state,
         errorMessage: "User Not Found!",
-        showAlert: true,
       });
       return;
     }
-    this.setState({
-      ...this.state,
-      showAlert: false,
-    });
+
     await this.getAddresses();
   }
 
   render() {
     return (
       <div>
-        {this.state?.errorMessage ? (
-          <Alert variant={"danger"} show={this.state.showAlert}>
-            {this.state?.errorMessage}
-          </Alert>
-        ) : (
-          ""
-        )}
-
         <Button
           className="add-button "
           variant="outline-success"

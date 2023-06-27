@@ -1,5 +1,4 @@
-//http://localhost:5000/
-//const mockData = require("./mock-data");
+
 const express = require("express");
 const cors = require("cors");
 const app = express();

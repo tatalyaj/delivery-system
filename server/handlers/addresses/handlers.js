@@ -38,6 +38,7 @@ const handlePostAddress = (req, res) => {
       frequency: data.frequency,
       recipientName: data.recipient_name,
       recipientPhone: data.recipient_phone,
+      assigned_to: data.assignedTo,
     });
     // res.json(addresses); // successful operation (POST, PUT, DELETE) should return only status code (20X)
     res.sendStatus(200);
@@ -60,6 +61,7 @@ const handlePutAddress = (req, res) => {
     address.frequency = data.frequency;
     address.recipientName = data.recipient_name;
     address.recipientPhone = data.recipient_phone;
+    address.assignedTo = data.assigned_to;
     res.sendStatus(200);
   } else {
     res.sendStatus(404);
@@ -96,8 +98,9 @@ const isAddressValid = (address) => {
     return false;
   } else if (!validPhone.test(address.recipient_phone)) {
     return false;
+  } else if (!validName.test(address.assignedTo)) {
+    return false;
   }
-
   console.log("Address is valid");
   return true;
 };
@@ -109,28 +112,3 @@ module.exports = {
   handlePutAddress,
   handleDeleteAddress,
 };
-
-// FORMER VALIDATION FUNC
-// // validation function can be used in post and put
-// const isAddressValid = (address) => {
-//   // return !(!address.city || !address.address || ... === !!address.city && !!address.address...
-//   const recipientPhoneToNum = Number(address.recipient_phone);
-//   if (typeof address.id !== "number") {
-//     if (!address.city) {
-//       return false;
-//     } else if (!address.address) {
-//       return false;
-//     } else if (!address.delivery_type) {
-//       return false;
-//     } else if (!address.frequency) {
-//       return false;
-//     } else if (!address.recipient_name) {
-//       return false;
-//     } else if (!recipientPhoneToNum && isNaN(recipientPhoneToNum)) {
-//       return false;
-//     }
-//   } else if (isNaN(recipientPhoneToNum)) {
-//     return false;
-//   }
-//   return true;
-// };
