@@ -24,12 +24,12 @@ export default class DriverDialog extends React.Component {
             distributionArea: null,
           },
       showDialog: false,
-      // errors: {
-      //   // eFirstName: null,
-      //   // eLastName: null,
-      //   // ePhone: null,
-      //   // eDistributionArea: null,
-      // },
+      errors: {
+        // eFirstName: null,
+        // eLastName: null,
+        // ePhone: null,
+        // eDistributionArea: null,
+      },
       // valid: true,
     };
   }
@@ -103,7 +103,7 @@ export default class DriverDialog extends React.Component {
     // For the field names - An array containing all the Object's properties
     let fieldNames = Object.getOwnPropertyNames(driver);
     //console.log(fieldNames[1]);
-    const errors = {};
+
     //const arraySize = fieldNames.length;
     for (const item of fieldNames) {
       //for (let i = 1; i < arraySize; i++) {
@@ -111,30 +111,30 @@ export default class DriverDialog extends React.Component {
       switch (item) {
         case "firstName":
           if (!validName.test(driver.firstName) || !driver.firstName) {
-            //this.setState({
-            //...this.state,
-            errors["eFirstName"] = "Please choose a valid  first name.";
-            //},
-            // });
+            this.setState({
+              //...this.state,
+              errors: {
+                ...this.state.errors,
+                eFirstName: "Please choose a valid  first name.",
+              },
+            });
             // console.log(i);
             console.log(
               `isDriverValid func: eFirstName is : ${this.state.errors?.eFirstName}`
             );
             isDriverValid = false;
           }
-          // continue;
-          break;
+          continue;
+        //break;
         case "lastName":
           if (!validName.test(driver.lastName) || !driver.lastName) {
-            errors["eLastName"] = "Please choose a valid  last name.";
-
-            // this.setState({
-            //   //...this.state,
-            //   errors: {
-            //     ...this.state.errors,
-            //     eLastName: "Please choose a valid  last name.",
-            //   },
-            // });
+            this.setState({
+              //...this.state,
+              errors: {
+                ...this.state.errors,
+                eLastName: "Please choose a valid  last name.",
+              },
+            });
             // console.log(i);
             console.log(
               `isDriverValid func: eLastName is : ${this.state.errors?.eLastName}`
@@ -142,19 +142,17 @@ export default class DriverDialog extends React.Component {
 
             isDriverValid = false;
           }
-          break;
-        // continue;
+          // break;
+          continue;
         case "phone":
           if (!validPhone.test(driver.phone) || !driver.phone) {
-            errors["ePhone"] = "Please choose a valid  phone number.";
-
-            // this.setState({
-            //   //...this.state,
-            //   errors: {
-            //     ...this.state.errors,
-            //     ePhone: "Please choose a valid  phone number.",
-            //   },
-            // });
+            this.setState({
+              //...this.state,
+              errors: {
+                ...this.state.errors,
+                ePhone: "Please choose a valid  phone number.",
+              },
+            });
             // console.log(i);
             console.log(
               `isDriverValid func: ePhone is : ${this.state.errors?.ePhone}`
@@ -162,20 +160,17 @@ export default class DriverDialog extends React.Component {
 
             isDriverValid = false;
           }
-          break;
-        // continue;
+          // break;
+          continue;
         case "distributionArea":
           if (!driver.distributionArea) {
-            errors["eDistributionArea"] =
-              "Please choose a valid  distribution area.";
-
-            // this.setState({
-            //   //...this.state,
-            //   errors: {
-            //     ...this.state.errors,
-            //     eDistributionArea: "Please choose a valid  distribution area.",
-            //   },
-            // });
+            this.setState({
+              //...this.state,
+              errors: {
+                ...this.state.errors,
+                eDistributionArea: "Please choose a valid  distribution area.",
+              },
+            });
             // console.log(i);
             console.log(
               `isDriverValid func: eDistributionArea is : ${this.state.errors?.eDistributionArea}`
@@ -183,13 +178,12 @@ export default class DriverDialog extends React.Component {
 
             isDriverValid = false;
           }
-          break;
-        // continue;
+          // break;
+          continue;
         default:
           break;
       }
     }
-    this.setState({ ...this.state, errors: errors });
     return isDriverValid;
   };
 
@@ -216,6 +210,17 @@ export default class DriverDialog extends React.Component {
   handleSaveDriver = (driver) => {
     let isValid = this.isDriverValidFunc(driver);
     if (isValid) {
+      this.setState({
+        ...this.state,
+        errors: {
+          //...this.state.errors,
+          // eFirstName: null,
+          // eLastName: null,
+          // ePhone: null,
+          // eDistributionArea: null,
+        },
+        //valid: true
+      });
       this.props.onDriverChanged(driver);
       console.log("Driver is valid");
       this.handleClose();
@@ -271,7 +276,7 @@ export default class DriverDialog extends React.Component {
                 defaultValue={this.state.driverForEdit?.firstName}
                 onChange={this.handleChange}
                 placeholder="First name..."
-                isInvalid={!!this.state.errors?.eFirstName}
+                isInvalid={!!this.state.errors.eFirstName}
               />
               {/* {this.state.errors.eFirstName ? (
                 <Form.Control.Feedback type="invalid">
@@ -279,7 +284,7 @@ export default class DriverDialog extends React.Component {
                 </Form.Control.Feedback>
               ) : null} */}
               <Form.Control.Feedback type="invalid">
-                {this.state.errors?.eFirstName}
+                {this.state.errors.eFirstName}
               </Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="mb-3" controlId="form.ControlInputLastName">
@@ -291,10 +296,10 @@ export default class DriverDialog extends React.Component {
                 defaultValue={this.state.driverForEdit?.lastName}
                 onChange={this.handleChange}
                 placeholder="Last name..."
-                isInvalid={!!this.state.errors?.eLastName}
+                isInvalid={!!this.state.errors.eLastName}
               />
               <Form.Control.Feedback type="invalid">
-                {this.state.errors?.eLastName}
+                {this.state.errors.eLastName}
               </Form.Control.Feedback>
             </Form.Group>
             <Form.Group
@@ -309,10 +314,10 @@ export default class DriverDialog extends React.Component {
                 defaultValue={this.state.driverForEdit?.phone}
                 onChange={this.handleChange}
                 placeholder="Phone number..."
-                isInvalid={!!this.state.errors?.ePhone}
+                isInvalid={!!this.state.errors.ePhone}
               />
               <Form.Control.Feedback type="invalid">
-                {this.state.errors?.ePhone}
+                {this.state.errors.ePhone}
               </Form.Control.Feedback>
             </Form.Group>
             <Form.Group
@@ -327,10 +332,10 @@ export default class DriverDialog extends React.Component {
                 defaultValue={this.state.driverForEdit?.distributionArea}
                 onChange={this.handleChange}
                 placeholder="Distribution area..."
-                isInvalid={!!this.state.errors?.eDistributionArea}
+                isInvalid={!!this.state.errors.eDistributionArea}
               />
               <Form.Control.Feedback type="invalid">
-                {this.state.errors?.eDistributionArea}
+                {this.state.errors.eDistributionArea}
               </Form.Control.Feedback>
             </Form.Group>
           </Modal.Body>

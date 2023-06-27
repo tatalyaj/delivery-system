@@ -16,7 +16,7 @@ const MyNavbar = (props) => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             {props.items.map((i) => (
-              <NavbarItem link={i.link} text={i.text} />
+              <NavbarItem key={i.text} link={i.link} text={i.text} />
             ))}
           </Nav>
         </Navbar.Collapse>
