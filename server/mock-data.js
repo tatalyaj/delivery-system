@@ -8,6 +8,7 @@ const addresses = [
     frequency: "High",
     recipientName: "John",
     recipientPhone: "972 54-333-4444",
+    assignedTo: "Jason",
   },
   {
     id: 1,
@@ -17,6 +18,7 @@ const addresses = [
     frequency: "High",
     recipientName: "James",
     recipientPhone: "+972-54-333-4444",
+    assignedTo: "Emma",
   },
   {
     id: 2,
@@ -26,6 +28,7 @@ const addresses = [
     frequency: "Low",
     recipientName: "Sarah",
     recipientPhone: "02-3334444",
+    assignedTo: "Emma",
   },
   {
     id: 3,
@@ -35,6 +38,7 @@ const addresses = [
     frequency: "Low",
     recipientName: "Josh",
     recipientPhone: "02 3334444",
+    assignedTo: "John",
   },
   {
     id: 4,
@@ -44,6 +48,7 @@ const addresses = [
     frequency: "Low",
     recipientName: "Julian",
     recipientPhone: "023334444",
+    assignedTo: "Harry",
   },
   {
     id: 5,
@@ -53,6 +58,7 @@ const addresses = [
     frequency: "Low",
     recipientName: "Natasha",
     recipientPhone: "050-333-4444",
+    assignedTo: "Johanna",
   },
   {
     id: 6,
@@ -62,6 +68,7 @@ const addresses = [
     frequency: "Low",
     recipientName: "Ron",
     recipientPhone: "(+972)54-333-4444",
+    assignedTo: "Ray",
   },
 ];
 // DRIVERS

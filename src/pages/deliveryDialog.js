@@ -3,8 +3,6 @@ import { Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
-// export const AddressDialogContext = createContext({ showDialog: false });
-
 export default class DeliveryDialog extends React.Component {
   constructor(props) {
     super(props);

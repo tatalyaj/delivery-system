@@ -1,6 +1,3 @@
-//import { addresses } from "./mock-data";
-// const res = await fetch(url, {method: 'POST', headers?, body: JSON.stringify(payload)})
-
 const BACKEND_HOST = "http://localhost:5000";
 
 export default class AdminAddresses {

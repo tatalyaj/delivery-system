@@ -11,7 +11,6 @@ export default class AdminAddressesPage extends React.Component {
     super(props);
     this.state = {
       errorMessage: null, // (from backend)
-      // ADDRESSES
       addresses: [],
       addressForEdit: null,
       showAddressDialog: false,

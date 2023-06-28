@@ -104,7 +104,7 @@ export default class AddressDialog extends React.Component {
           }
           break;
         case "assignedTo":
-          if (!validName.test(address.assignedTo) || !address.assignedTo) {
+          if (!address.assignedTo) {
             errors["eAssignedTo"] = "Please choose a valid  name.";
             isAddressValid = false;
           }

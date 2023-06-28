@@ -1,6 +1,5 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
-//import Alert from "react-bootstrap/Alert";
 import AdminDrivers from "../classes/adminDrivers";
 import DriverDialog from "./driverDialog";
 import DriverTable from "./driverTable";

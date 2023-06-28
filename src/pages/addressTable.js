@@ -46,7 +46,7 @@ export default class AddressTable extends React.Component {
               <td>{item?.frequency}</td>
               <td>{item?.recipientName}</td>
               <td>{item?.recipientPhone}</td>
-              <td>{`-----`}</td>
+              <td>{item?.assignedTo}</td>
               <td>
                 <Button
                   className="edit-buttons"

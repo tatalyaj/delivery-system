@@ -21,6 +21,7 @@ const handleGetAddressById = (req, res) => {
 // POST - Adding new address handler - should also have payload validation
 const handlePostAddress = (req, res) => {
   let addresses = mockData.addresses;
+
   const data = req.body;
   if (isAddressValid(data)) {
     let newId;
@@ -28,6 +29,7 @@ const handlePostAddress = (req, res) => {
       newId = validation.generateUUID(addresses);
     } catch (e) {
       res.sendStatus(500);
+
       return;
     }
     addresses.push({
@@ -40,7 +42,7 @@ const handlePostAddress = (req, res) => {
       recipientPhone: data.recipient_phone,
       assigned_to: data.assignedTo,
     });
-    // res.json(addresses); // successful operation (POST, PUT, DELETE) should return only status code (20X)
+
     res.sendStatus(200);
   } else {
     res.sendStatus(404);
@@ -51,10 +53,7 @@ const handlePutAddress = (req, res) => {
   let addresses = mockData.addresses;
   let data = req.body;
   const address = addresses.find((item) => item.id === Number(data.id));
-  //console.log(address);
   if (address && isAddressValid(data)) {
-    // address.city = data.city (should work because array.find returns an object by reference)
-    // addresses[addresses.indexOf(address)].city = data.city;
     address.city = data.city;
     address.address = data.address;
     address.deliveryType = data.delivery_type;
