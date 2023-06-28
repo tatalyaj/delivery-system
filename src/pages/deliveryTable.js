@@ -50,12 +50,13 @@ export default class DeliveryTable extends React.Component {
               <td>{item?.recipientName}</td>
               <td>{item?.recipientPhone}</td>
               <td>
-                {" "}
-                <input
-                  // value={item?.done}
-                  type="checkbox"
-                  onChange={(e) => this.handleCheck(item.id, e)}
-                />
+                <Button
+                  className="done-buttons"
+                  variant="outline-success"
+                  onClick={(e) => this.handleCheck(item.id, e)}
+                >
+                  Done
+                </Button>
               </td>
               <td>
                 <Button
