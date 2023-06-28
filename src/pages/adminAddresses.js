@@ -3,6 +3,7 @@ import Button from "react-bootstrap/Button";
 import AdminAddresses from "../classes/adminAddresses";
 import AddressDialog from "./addressDialog";
 import AddressTable from "./addressTable";
+import AdminMap from "./adminMap";
 
 const adminService = new AdminAddresses();
 
@@ -173,6 +174,7 @@ export default class AdminAddressesPage extends React.Component {
           onAddressChanged={this.handleAddressChanged}
           onDialogClose={this.handleClose.bind(this)}
         />
+        <AdminMap />
       </div>
     );
   }

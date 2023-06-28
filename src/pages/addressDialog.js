@@ -3,6 +3,10 @@ import { Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import regexValidation from "../utils/regexUtils";
+// import PlacesAutocomplete from "react-places-autocomplete";
+// import { Autocomplete } from "@react-google-maps/api";
+import GooglePlacesAutocomplete from "react-google-places-autocomplete";
+const API_KEY = "AIzaSyAxpENORc-fSayGHWY-gbKeI8lH2sqeG1A";
 
 export default class AddressDialog extends React.Component {
   constructor(props) {
@@ -166,14 +170,15 @@ export default class AddressDialog extends React.Component {
             </Form.Group>
             <Form.Group className="mb-3" controlId="form.ControlInputAddress">
               <Form.Label>Address</Form.Label>
-              <Form.Control
+              {/* <Form.Control
                 type="text"
                 name="address"
                 defaultValue={this.state.addressForEdit?.address}
                 onChange={this.handleChange}
                 placeholder="Address name..."
                 isInvalid={!!this.state.errors?.eAddress}
-              />
+              /> */}
+
               <Form.Control.Feedback type="invalid">
                 {this.state.errors?.eAddress}
               </Form.Control.Feedback>
@@ -277,3 +282,16 @@ export default class AddressDialog extends React.Component {
     );
   }
 }
+
+/**
+ * GooglePlacesAutocomplete
+ *  <GooglePlacesAutocomplete
+                apiKey={API_KEY}
+                name="address"
+                defaultValue={this.state.addressForEdit?.address}
+                selectProps={{
+                  onChange: this.handleChange,
+                }}
+                isInvalid={!!this.state.errors?.eAddress}
+              />
+ */
