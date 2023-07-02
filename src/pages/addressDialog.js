@@ -3,10 +3,8 @@ import { Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import regexValidation from "../utils/regexUtils";
-// import PlacesAutocomplete from "react-places-autocomplete";
-// import { Autocomplete } from "@react-google-maps/api";
-import GooglePlacesAutocomplete from "react-google-places-autocomplete";
-const API_KEY = "AIzaSyAxpENORc-fSayGHWY-gbKeI8lH2sqeG1A";
+import { Autocomplete } from "@react-google-maps/api";
+// const API_KEY = "AIzaSyAxpENORc-fSayGHWY-gbKeI8lH2sqeG1A";
 
 export default class AddressDialog extends React.Component {
   constructor(props) {
@@ -25,9 +23,12 @@ export default class AddressDialog extends React.Component {
             recipientName: null,
             recipientPhone: null,
             assignedTo: null,
+            coordinates: null,
           },
 
       showDialog: false,
+      coordinates: null,
+      autocomplete: null,
     };
   }
   // HANDLE CLOSE DIALOG
@@ -67,7 +68,7 @@ export default class AddressDialog extends React.Component {
       switch (item) {
         case "city":
           if (!address.city) {
-            errors["eAddress"] = "Please choose a valid  city name.";
+            errors["eCity"] = "Please choose a valid  city name.";
             isAddressValid = false;
           }
           break;
@@ -143,7 +144,20 @@ export default class AddressDialog extends React.Component {
       },
     });
   };
+  // For the map
+  onLoad(autocomplete) {
+    console.log("autocomplete: ", autocomplete);
 
+    this.autocomplete = autocomplete;
+  }
+
+  onPlaceChanged() {
+    if (this.autocomplete !== null) {
+      console.log(this.autocomplete.getPlace());
+    } else {
+      console.log("Autocomplete is not loaded yet!");
+    }
+  }
   render() {
     return (
       <Modal show={this.props.showDialog} onHide={this.handleClose.bind(this)}>
@@ -156,6 +170,7 @@ export default class AddressDialog extends React.Component {
           <Form noValidate>
             <Form.Group className="mb-3" controlId="form.ControlInputCity">
               <Form.Label>City</Form.Label>
+
               <Form.Control
                 type="text"
                 name="city"
@@ -164,21 +179,26 @@ export default class AddressDialog extends React.Component {
                 placeholder="City name..."
                 isInvalid={!!this.state.errors?.eCity}
               />
+
               <Form.Control.Feedback type="invalid">
                 {this.state.errors?.eCity}
               </Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="mb-3" controlId="form.ControlInputAddress">
               <Form.Label>Address</Form.Label>
-              {/* <Form.Control
-                type="text"
-                name="address"
-                defaultValue={this.state.addressForEdit?.address}
-                onChange={this.handleChange}
-                placeholder="Address name..."
-                isInvalid={!!this.state.errors?.eAddress}
-              /> */}
-
+              <Autocomplete
+                onLoad={this.onLoad.bind(this)}
+                onPlaceChanged={this.onPlaceChanged.bind(this)}
+              >
+                <Form.Control
+                  type="text"
+                  name="address"
+                  defaultValue={this.state.addressForEdit?.address}
+                  onChange={this.handleChange}
+                  placeholder="Address name..."
+                  isInvalid={!!this.state.errors?.eAddress}
+                />
+              </Autocomplete>
               <Form.Control.Feedback type="invalid">
                 {this.state.errors?.eAddress}
               </Form.Control.Feedback>
@@ -284,7 +304,7 @@ export default class AddressDialog extends React.Component {
 }
 
 /**
- * GooglePlacesAutocomplete
+ * GooglePlacesAutocomplete:
  *  <GooglePlacesAutocomplete
                 apiKey={API_KEY}
                 name="address"
@@ -294,4 +314,25 @@ export default class AddressDialog extends React.Component {
                 }}
                 isInvalid={!!this.state.errors?.eAddress}
               />
+ */
+/**
+ * PlacesAutocomplete:
+ *  { <PlacesAutocomplete
+                defaultValue={this.state.addressForEdit?.address}
+                onChange={this.handleChange}
+                onSelect={this.handleSelect}
+              /> }
+
+    THE FUNC:
+
+     // //  HANDLE SELECT
+  // handleSelect = async (value) => {
+  //   // const results = await geocodeByAddress(value);
+  //   // const latLing = await getLatLng(results[0]);
+  //   this.setState({
+  //     ...this.state,
+  //     address: value,
+  //     // coordinates: latLing,
+  //   });
+  // };
  */
